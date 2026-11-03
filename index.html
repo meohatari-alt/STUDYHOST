@@ -82,7 +82,7 @@ body[data-small=friends] #mini,body[data-small=both] #mini{display:flex;flex-wra
 body[data-small=timer] #mini{display:none}
 html:not([data-sa]) #inst{display:none}html[data-sa] #inst{display:inline-block}
 </style></head><body>
-<header><h1>Study Buddy <span id="mascot">🍓</span></h1><b id="me"></b><button id="pip" aria-label="Floating window" title="Floating window" hidden>🗗</button><button id="inst" aria-label="Install app" title="Install app">⬇️</button><button id="fs" aria-label="Full screen">⛶</button><button id="gear" aria-label="Settings">⚙️</button></header>
+<header><h1>Study Buddy <span id="mascot">🍓</span></h1><b id="me"></b><button id="pip" aria-label="Floating window" title="Floating window">🗗</button><button id="inst" aria-label="Install app" title="Install app">⬇️</button><button id="fs" aria-label="Full screen">⛶</button><button id="gear" aria-label="Settings">⚙️</button></header>
 <main>
 <section id="v-home">
  <div id="timer"><button id="pen" class="mini" aria-label="Edit timer" title="Edit timer" hidden>✏️</button><div id="sess">0:00:00</div><small id="stl">ready when you are</small><div id="stats"><span><small>Today</small><b id="sd">0:00:00</b></span><span><small>This week</small><b id="sw">0:00:00</b></span><span><small>This month</small><b id="sm">0:00:00</b></span></div></div>
@@ -320,7 +320,7 @@ async function togglePip(){try{if(pw){pw.close();return}
   d.body.innerHTML=`<div id="timer" style="margin:0 0 8px"><div id="sess"></div><small id="stl"></small></div><div id="btns">${pipBtns()}</div><div id="mini" style="display:none;flex-wrap:wrap;gap:6px;justify-content:center"></div>`;
   d.body.onclick=e=>{const b=e.target.closest("[data-s]");if(b){beep("click");setStatus(b.dataset.s)}};pw.addEventListener("pagehide",()=>{pw=null});pipUpdate();return}
  pcv=document.createElement("canvas");pcv.width=320;pcv.height=180;pvd=document.createElement("video");pvd.muted=true;pvd.playsInline=true;pipDraw();pvd.srcObject=pcv.captureStream(2);await pvd.play();pvd.addEventListener("leavepictureinpicture",()=>{pvd.srcObject=null;pcv=null;pvd=null},{once:true});await pvd.requestPictureInPicture()}catch(e){pcv=null;pvd=null;banner("Floating window isn't available here.")}}
-if(!(window.documentPictureInPicture||document.pictureInPictureEnabled))$("#pip").hidden=true;$("#pip").onclick=togglePip;
+$("#pip").hidden=!(window.documentPictureInPicture||document.pictureInPictureEnabled);$("#pip").onclick=togglePip;
 /* ---- timer in notifications (Android) / taskbar badge (desktop) ---- */
 const ANDROID=/Android/i.test(navigator.userAgent);let tl=0,tb=-1;
 function trayUpdate(f){if(!ready)return;const act=me.status==="studying"||me.status==="break",on=cfg.nt.tray&&act&&window.Notification&&Notification.permission==="granted";
