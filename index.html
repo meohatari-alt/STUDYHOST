@@ -2,16 +2,20 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Study Buddy</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Cairo:wght@500;600&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#3d2645;--paper:#fff4ec;--pink:#ff9ebb;--mint:#9fe3c3;--lav:#c9b6ff;--but:#ffe08a;--peach:#ffb38a}
+:root{--ta:#ff9ebb;--tb:#ffe08a;--tc:#c9b6ff;--ink:#3d2645;--paper:#fff4ec;--card:#fff;--me:#ffe3ee;--g1:#ffd9e6;--g2:#e3d9ff;--err:#c0264f;--dng:#ffc9d4;--pink:var(--ta);--but:var(--tb);--lav:var(--tc);--mint:#9fe3c3;--peach:#ffb38a}
+:root[data-theme=mint]{--ta:#9fe3c3;--tb:#ffe9a8;--tc:#b8e6ff;--ink:#1f3d33;--paper:#f0fbf5;--me:#dcf7e9;--g1:#cdf3e0;--g2:#d6eefc}
+:root[data-theme=ocean]{--ta:#8cc8ff;--tb:#ffe08a;--tc:#b6c2ff;--ink:#1f2f4d;--paper:#eef6ff;--me:#dcecff;--g1:#cfe6ff;--g2:#e0dcff}
+:root[data-theme=sunset]{--ta:#ffb38a;--tb:#ffd37a;--tc:#ff9ebb;--ink:#4a2a1f;--paper:#fff1e4;--me:#ffe0cc;--g1:#ffd2b8;--g2:#ffc9d4}
+:root[data-dark]{color-scheme:dark;--ink:#f4eaf8;--paper:#1a1420;--card:#2a2034;--err:#ff8aa6;--dng:#6b2a3c;--pink:color-mix(in srgb,var(--ta) 55%,#1a1420);--but:color-mix(in srgb,var(--tb) 50%,#1a1420);--lav:color-mix(in srgb,var(--tc) 55%,#1a1420);--mint:color-mix(in srgb,#9fe3c3 50%,#1a1420);--peach:color-mix(in srgb,#ffb38a 55%,#1a1420);--me:color-mix(in srgb,var(--ta) 30%,#1a1420);--g1:color-mix(in srgb,var(--ta) 22%,#1a1420);--g2:color-mix(in srgb,var(--tc) 22%,#1a1420)}
 *{box-sizing:border-box}
-html{height:100%;background:radial-gradient(circle at 15% 0,#ffd9e6 0,transparent 40%),radial-gradient(circle at 95% 35%,#e3d9ff 0,transparent 35%),var(--paper)}
+html{height:100%;background:radial-gradient(circle at 15% 0,var(--g1) 0,transparent 40%),radial-gradient(circle at 95% 35%,var(--g2) 0,transparent 35%),var(--paper)}
 body{margin:auto;height:100%;max-width:480px;display:flex;flex-direction:column;font:500 16px/1.4 Fredoka,ui-rounded,"Segoe UI",system-ui,sans-serif;color:var(--ink);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
 button,input,select{font:inherit;color:var(--ink)}
-button{background:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:7px 12px;box-shadow:0 3px 0 var(--ink);cursor:pointer}
+button{background:var(--card);border:2.5px solid var(--ink);border-radius:14px;padding:7px 12px;box-shadow:0 3px 0 var(--ink);cursor:pointer}
 button:active{transform:translateY(3px);box-shadow:none}
-input,select{background:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:8px 12px;min-width:0}
+input,select{background:var(--card);border:2.5px solid var(--ink);border-radius:14px;padding:8px 12px;min-width:0}
 :focus-visible{outline:3px solid var(--lav);outline-offset:2px}
 [hidden]{display:none!important}
 header{display:flex;align-items:center;gap:8px;padding:12px 16px 4px}
@@ -26,11 +30,11 @@ main{flex:1;overflow:auto;padding:8px 14px}
 #btns{display:flex;gap:6px;justify-content:center;margin-bottom:14px}
 #btns button{flex:1;padding:8px 2px}
 #btns button.on{transform:translateY(3px);box-shadow:none;background:var(--c)}
-#chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+#chips,#pers,#modes{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .chip{padding:3px 11px;font-size:14px;box-shadow:0 2px 0 var(--ink)}
 .chip.on{background:var(--pink)}
-.row{display:flex;align-items:center;gap:8px;background:#fff;border:2.5px solid var(--ink);border-radius:18px;padding:7px 10px;margin-bottom:8px}
-.row.me{background:#ffe3ee}
+.row{display:flex;align-items:center;gap:8px;background:var(--card);border:2.5px solid var(--ink);border-radius:18px;padding:7px 10px;margin-bottom:8px}
+.row.me{background:var(--me)}
 .rk{width:18px;text-align:center;opacity:.6}
 .av{width:42px;height:42px;border-radius:50%;border:4px solid;display:grid;place-items:center;font-size:22px;overflow:hidden;background:var(--paper);flex:none}
 .av img{width:100%;height:100%;object-fit:cover}
@@ -41,14 +45,14 @@ main{flex:1;overflow:auto;padding:8px 14px}
 .mini{padding:2px 6px;box-shadow:0 2px 0 var(--ink);font-size:14px}
 .add{display:flex;gap:8px;margin:10px 0}
 .add input{flex:1}
-.card{background:#fff;border:2.5px solid var(--ink);border-radius:18px;padding:10px 12px;margin-bottom:10px}
+.card{background:var(--card);border:2.5px solid var(--ink);border-radius:18px;padding:10px 12px;margin-bottom:10px}
 .pill{display:inline-block;background:var(--lav);border:2px solid var(--ink);border-radius:12px;padding:0 8px;margin:3px 3px 3px 0;font-size:14px}
-.pill a{cursor:pointer;color:#c0264f}
+.pill a{cursor:pointer;color:var(--err)}
 .tag{background:var(--mint);border:2px solid var(--ink);border-radius:10px;padding:0 6px;font-size:13px;cursor:pointer}
 .empty,#hint{opacity:.7;text-align:center;font-size:14px}
-#banner{margin:0;padding:0 16px;color:#c0264f;text-align:center;min-height:0}
+#banner{margin:0;padding:0 16px;color:var(--err);text-align:center;min-height:0}
 #msgs{height:55vh;overflow:auto;display:flex;flex-direction:column;gap:6px;padding:4px}
-.m{max-width:80%;background:#fff;border:2.5px solid var(--ink);border-radius:16px;padding:4px 10px;align-self:flex-start;overflow-wrap:anywhere}
+.m{max-width:80%;background:var(--card);border:2.5px solid var(--ink);border-radius:16px;padding:4px 10px;align-self:flex-start;overflow-wrap:anywhere}
 .m.mine{align-self:flex-end;background:var(--pink)}
 .m small{display:block;opacity:.65;font-size:12px}
 nav{display:flex;gap:8px;padding:10px 14px 12px}
@@ -58,22 +62,31 @@ dialog{border:2.5px solid var(--ink);border-radius:24px;box-shadow:0 6px 0 var(-
 dialog::backdrop{background:#3d264766}
 dialog h3{margin:14px 0 6px}
 dialog label{display:flex;align-items:center;gap:8px;margin:4px 0}
-.danger{background:#ffc9d4}
-.dot{display:inline-block;min-width:10px;height:10px;border-radius:50%;border:2px solid var(--ink);margin-left:4px;vertical-align:middle;font-size:9px;line-height:8px}.dot.r{background:#ff4d6d}.dot.b{background:#4d9bff}.dot.y{background:var(--but);padding:0 2px}
+.danger{background:var(--dng)}
+.dot{display:inline-block;min-width:10px;height:10px;border-radius:50%;border:2px solid var(--ink);margin-inline-start:4px;vertical-align:middle;font-size:9px;line-height:8px}.dot.r{background:#ff4d6d}.dot.b{background:#4d9bff}.dot.y{background:var(--but);padding:0 2px}
+html:fullscreen body{max-width:none}
+@media(min-width:900px){body{max-width:720px}html:fullscreen body{max-width:none}}
+#stats{display:flex;justify-content:space-around;margin-top:8px;font-size:15px}#stats span{display:flex;flex-direction:column;line-height:1.2}#stats small{opacity:.7;font-size:12px}#stats b,#sess,.t{direction:ltr;unicode-bidi:isolate}
+#modes{justify-content:center}
+.row small span{margin-inline-start:4px}.lk{margin-inline-start:4px}
+#help{display:flex;gap:6px;align-items:center;margin:0 auto 10px;padding:2px 12px 2px 4px;font-size:13px;box-shadow:0 2px 0 var(--ink)}
+#help i{width:20px;height:20px;border-radius:50%;background:var(--lav);border:2px solid var(--ink);display:grid;place-items:center;font:700 12px/1 Georgia,serif}
+html[lang=ar] body{font-family:Cairo,Fredoka,ui-rounded,system-ui,sans-serif}
 </style></head><body>
-<header><h1>Study Buddy <span id="mascot">🍓</span></h1><b id="me"></b><button id="gear" aria-label="Settings">⚙️</button></header>
+<header><h1>Study Buddy <span id="mascot">🍓</span></h1><b id="me"></b><button id="fs" aria-label="Full screen">⛶</button><button id="gear" aria-label="Settings">⚙️</button></header>
 <main>
 <section id="v-home">
- <div id="timer"><div id="sess">0:00:00</div><small id="stl">ready when you are</small></div>
+ <div id="timer"><div id="sess">0:00:00</div><small id="stl">ready when you are</small><div id="stats"><span><small>Today</small><b id="sd">0:00:00</b></span><span><small>This week</small><b id="sw">0:00:00</b></span><span><small>This month</small><b id="sm">0:00:00</b></span></div></div>
+ <div id="modes"></div>
  <div id="btns">
   <button data-s="studying" style="--c:var(--mint)">📖 Study</button>
   <button data-s="break" style="--c:var(--but)">🍵 Break</button>
   <button data-s="away" style="--c:var(--peach)">🌙 Away</button>
   <button data-s="idle" style="--c:var(--lav)">⏹ Stop</button>
  </div>
- <div id="reqs"></div><div id="chips"></div><div id="list"></div>
+ <div id="reqs"></div><div id="pers"></div><div id="chips"></div><div id="list"></div>
  <div class="add"><input id="fin" placeholder="Add a friend's name tag"><button id="fadd">Add</button></div>
- <p id="hint">Right-click or long-press someone to hide them.</p>
+ <p id="hint">Tap ⋯ to mute, block or hide someone.</p>
 </section>
 <section id="v-chat" hidden>
  <select id="csel" style="width:100%;margin-bottom:8px"></select>
@@ -88,139 +101,248 @@ dialog label{display:flex;align-items:center;gap:8px;margin:4px 0}
 </main>
 <p id="banner"></p>
 <nav><button data-v="home" class="on">🏠 Home<i class="dot y" id="dq" hidden></i></button><button data-v="chat">💬 Chat<i class="dot r" id="dr" hidden></i><i class="dot b" id="db" hidden></i></button><button data-v="groups">👭 Groups</button></nav>
+<footer><button id="help"><i>i</i> Help</button></footer>
 <dialog id="dlg"></dialog>
-<dialog id="nm"><h3>Welcome 🌸</h3><div class="add" style="margin:0 0 8px"><button id="tin" class="chip on">Log in</button><button id="tup" class="chip">Sign up</button></div><p id="nh" style="font-size:14px;margin:0 0 8px"></p><div style="display:grid;gap:8px"><input id="nin" maxlength="20" placeholder="Name tag" autocomplete="username"><input id="npw" type="password" placeholder="Password (6+ characters)" autocomplete="current-password"><button id="nok">Let's go</button></div><p id="nmsg" style="color:#c0264f"></p></dialog>
+<dialog id="nm"><h3>Welcome 🌸</h3><div class="add" style="margin:0 0 8px"><button id="tin" class="chip on">Log in</button><button id="tup" class="chip">Sign up</button></div><p id="nh" style="font-size:14px;margin:0 0 8px"></p><div style="display:grid;gap:8px"><input id="nin" maxlength="20" placeholder="Name tag" autocomplete="username"><input id="npw" type="password" placeholder="Password (6+ characters)" autocomplete="current-password"><button id="nok">Let's go</button></div><p id="nmsg" style="color:var(--err)"></p></dialog>
 <script>
 const DB="https://rmdn-f2330-default-rtdb.firebaseio.com";
 const $=s=>document.querySelector(s),NAME_RE=/^(?=.*[A-Za-z])[A-Za-z0-9_-]{2,20}$/;
 const ST={studying:["Studying","#6fd6a3"],break:["On break","#ffd25e"],away:["Away","#ff9a6b"],idle:["Online","#b9a4ff"],offline:["Offline","#cfc3cf"]};
 const EM=["🐰","🐱","🐻","🦊","🐼","🐸","🐥","🦄","🐙","🐹"];
-const S={online:[660,880],offline:[520,390],start:[523,659,784],end:[784,659,523],click:[1000],msg:[880,1175]};
-const SL={online:"Friend comes online",offline:"Friend goes offline",start:"Timer starts",end:"Timer ends",click:"Button click",msg:"New message / friend request"};
+const S={online:[660,880],offline:[520,390],start:[523,659,784],end:[784,659,523],click:[1000],msg:[880,1175],ren:[740,988]};
+const SL={online:"Friend comes online",offline:"Friend goes offline",start:"Timer starts",end:"Timer ends",click:"Button click",msg:"New message / friend request",ren:"Someone changes their name"};
 let cfg={};try{cfg=JSON.parse(localStorage.sb||"{}")}catch(e){}
 cfg.uid??=crypto.randomUUID();cfg.friends??=[];cfg.blocked??=[];cfg.hidden??=[];cfg.sel??=[];cfg.dms??=[];cfg.snd??={on:true,vol:.5,off:[]};cfg.nt??={dots:true,pop:false};cfg.dev??=crypto.randomUUID();
 const save=()=>{try{localStorage.sb=JSON.stringify(cfg)}catch(e){}};
-let key=null,me={status:"idle",since:null,total:0},users={},groups={},off=0,hbl=0,seenLs=null,ready=false,started=false,prevOn={},lastSig="",chatSel="general",lastMsg="",wl=null,reqs={},prevReq=null,unr={},swept=0,busy=0,am="in",lastReq="";
+/* ---- look, language, dates ---- */
+const TH={strawberry:"🍓 Strawberry",mint:"🌿 Mint",ocean:"🌊 Ocean",sunset:"🌅 Sunset"},mq=matchMedia("(prefers-color-scheme: dark)"),P=()=>cfg.per||"total";
+cfg.muted??=[];cfg.pm={mode:"flow",f:25,s:5,l:15,c:4,auto:true,...cfg.pm};cfg.rn??=[];cfg.ren??={};cfg.old??=[];cfg.nt.ren??=true;cfg.mode??="auto";cfg.theme??="strawberry";cfg.lang??=/^ar/i.test(navigator.language||"")?"ar":"en";
+try{const j=new URLSearchParams(location.search).get("join");if(j&&/^[A-Za-z0-9]{3,8}$/.test(j)){cfg.pj=j.toUpperCase();save();history.replaceState(null,"",location.href.split(/[?#]/)[0])}}catch(e){}
+function applyLook(){const h=document.documentElement;h.dataset.theme=cfg.theme;if(cfg.mode==="dark"||cfg.mode==="auto"&&mq.matches)h.dataset.dark="1";else delete h.dataset.dark}
+mq.addEventListener("change",applyLook);
+const AR={"ready when you are":"جاهز متى شئت","studying, you've got this!":"تذاكر الآن، أنت قادر على ذلك!","break time, sip some tea":"وقت الاستراحة، اشرب بعض الشاي","away for a bit":"غائب قليلًا",
+"📖 Study":"📖 مذاكرة","🍵 Break":"🍵 استراحة","🌙 Away":"🌙 غائب","⏹ Stop":"⏹ إيقاف","Today":"اليوم","This week":"هذا الأسبوع","This month":"هذا الشهر","All time":"كل الوقت","Week":"الأسبوع","Month":"الشهر",
+"All":"الكل","💛 Friends":"💛 الأصدقاء","Groups only":"المجموعات فقط","👀 {n} hidden":"👀 {n} مخفي","Add a friend's name tag":"أضف اسم مستخدم صديق","Add":"إضافة","Tap ⋯ to mute, block or hide someone.":"اضغط ⋯ لكتم شخص أو حظره أو إخفائه.",
+"🏠 Home":"🏠 الرئيسية","💬 Chat":"💬 المحادثة","👭 Groups":"👭 المجموعات","Help":"مساعدة","Say something nice":"قل شيئًا لطيفًا","Send":"إرسال","🌍 General":"🌍 عام","Nothing here yet. Say hi! 👋":"لا شيء هنا بعد. قل مرحبًا! 👋",
+"New group name":"اسم المجموعة الجديد","Create":"إنشاء","Group tag to join":"رمز المجموعة للانضمام","Join":"انضمام","No groups yet. Create one, or enter a tag to join.":"لا توجد مجموعات بعد. أنشئ مجموعة أو أدخل رمزًا للانضمام.",
+"💛 Add all as friends":"💛 أضف الجميع كأصدقاء","Leave":"مغادرة","Tap to copy":"اضغط للنسخ","Copy invite link":"نسخ رابط الدعوة","Ban":"طرد","💌 Friend requests":"💌 طلبات الصداقة","wants to be friends":"يريد أن يكون صديقك","✔ Accept":"✔ قبول","Decline":"رفض",
+"Studying":"يذاكر","On break":"في استراحة","Away":"غائب","Online":"متصل","Offline":"غير متصل","Not found yet":"لم يُعثر عليه بعد","Message":"رسالة","Send friend request":"إرسال طلب صداقة","More":"المزيد",
+"Welcome 🌸":"أهلًا بك 🌸","Log in":"تسجيل الدخول","Sign up":"إنشاء حساب","Name tag":"اسم المستخدم","Password (6+ characters)":"كلمة المرور (6 أحرف أو أكثر)","Let's go":"هيا بنا",
+"Log in with your name tag and password from any device.":"سجّل الدخول باسم المستخدم وكلمة المرور من أي جهاز.",
+"Pick a name tag (2-20 letters, numbers, _ or -) and a password (6+ characters). Accounts unused for 3 months are deleted and the tag becomes free.":"اختر اسم مستخدم (من 2 إلى 20 حرفًا إنجليزيًا أو رقمًا أو _ أو -) وكلمة مرور (6 أحرف أو أكثر). تُحذف الحسابات غير المستخدمة لمدة 3 أشهر ويصبح الاسم متاحًا.",
+"Name tag: 2-20 letters, numbers, _ or -, with at least one letter.":"اسم المستخدم: من 2 إلى 20 حرفًا إنجليزيًا أو رقمًا أو _ أو -، مع حرف إنجليزي واحد على الأقل.","Password needs 6+ characters.":"كلمة المرور يجب أن تكون 6 أحرف أو أكثر.",
+"That name tag is taken. If it's yours, use Log in.":"اسم المستخدم هذا مأخوذ. إن كان لك فاستخدم تسجيل الدخول.","No account with that name tag.":"لا يوجد حساب بهذا الاسم.","Wrong password.":"كلمة المرور خاطئة.","Can't reach the server.":"تعذّر الوصول إلى الخادم.",
+"Set a password so you can log in from anywhere 🔒":"عيّن كلمة مرور لتتمكن من الدخول من أي مكان 🔒","Please log in again.":"يرجى تسجيل الدخول مرة أخرى.","You've been invited to a group 💌 Sign up (or log in) to join it.":"تمت دعوتك إلى مجموعة 💌 أنشئ حسابًا (أو سجّل الدخول) للانضمام إليها.",
+"The database rules are blocking access. Check the Rules tab in Firebase.":"قواعد قاعدة البيانات تمنع الوصول. تحقق من تبويب Rules في Firebase.","Can't reach the server. Retrying…":"تعذّر الوصول إلى الخادم. جارٍ إعادة المحاولة…",
+"No group has that tag.":"لا توجد مجموعة بهذا الرمز.","You can't join this group.":"لا يمكنك الانضمام إلى هذه المجموعة.","Friend request sent 💌":"تم إرسال طلب الصداقة 💌","Friend requests sent 💌":"تم إرسال طلبات الصداقة 💌",
+"That name tag is invalid, already a friend, or blocked.":"اسم المستخدم غير صالح، أو هو صديق بالفعل، أو محظور.","Nobody has that name tag.":"لا أحد لديه هذا الاسم.","Friend request sent 💌 They'll see it on their Home screen.":"تم إرسال طلب الصداقة 💌 سيظهر لهم في الشاشة الرئيسية.",
+"Invite link copied 🔗":"تم نسخ رابط الدعوة 🔗","Tag copied 📋":"تم نسخ الرمز 📋","Copy this invite link:":"انسخ رابط الدعوة هذا:",
+"Name":"الاسم","Save":"حفظ","Profile picture":"الصورة الشخصية","Appearance":"المظهر","Mode":"النمط","Auto (system)":"تلقائي (النظام)","Light":"فاتح","Dark":"داكن","🍓 Strawberry":"🍓 فراولة","🌿 Mint":"🌿 نعناع","🌊 Ocean":"🌊 محيط","🌅 Sunset":"🌅 غروب","Language":"اللغة",
+"Background":"الخلفية","Keep running (keeps the screen awake)":"إبقاء التشغيل (يُبقي الشاشة مضاءة)","Notifications":"الإشعارات","Dots for new messages (🔴 groups, 🔵 DMs)":"نقاط للرسائل الجديدة (🔴 المجموعات، 🔵 الخاصة)","Pop-up notifications when the tab is hidden":"إشعارات منبثقة عندما تكون الصفحة مخفية",
+"Sounds":"الأصوات","Sounds on":"تشغيل الأصوات","Volume":"مستوى الصوت","Friend comes online":"صديق يتصل","Friend goes offline":"صديق يقطع الاتصال","Timer starts":"بدء المؤقت","Timer ends":"انتهاء المؤقت","Button click":"نقر الأزرار","New message / friend request":"رسالة جديدة / طلب صداقة",
+"Muted people":"الأشخاص المكتومون","Blocked people":"الأشخاص المحظورون","Nobody.":"لا أحد.","undo":"تراجع","Your data":"بياناتك","Reset to zero":"إعادة التعيين إلى الصفر","Log out":"تسجيل الخروج","Close":"إغلاق",
+"Use 2-20 letters, numbers, _ or -.":"استخدم من 2 إلى 20 حرفًا إنجليزيًا أو رقمًا أو _ أو -.","Saved! Your friends and groups came with you, and they'll be told.":"تم الحفظ! انتقل أصدقاؤك ومجموعاتك معك وسيتم إبلاغهم.","Already taken.":"الاسم مأخوذ بالفعل.",
+"Log out on this device?":"تسجيل الخروج من هذا الجهاز؟","Reset all your study time to zero? This can't be undone.":"إعادة كل وقت مذاكرتك إلى الصفر؟ لا يمكن التراجع عن ذلك.","Ban this member from the group?":"طرد هذا العضو من المجموعة؟","Leave this group?":"مغادرة هذه المجموعة؟",
+"Block {n}? They'll vanish from your friends, list and chats.":"حظر {n}؟ سيختفون من أصدقائك والقائمة والمحادثات.","🔕 Mute":"🔕 كتم","🔔 Unmute":"🔔 إلغاء الكتم","🙈 Hide from list":"🙈 إخفاء من القائمة","🚫 Block":"🚫 حظر",
+"Mute: no sounds or alerts from them. Block: removed from your friends, list and chats.":"الكتم: لا أصوات أو تنبيهات منهم. الحظر: يُزالون من أصدقائك والقائمة والمحادثات.",
+"⏱ Flow":"⏱ تدفق","🍅 Pomodoro":"🍅 بومودورو","🍅 Focus {a}/{b}":"🍅 تركيز {a}/{b}","☕ Short break":"☕ استراحة قصيرة","🌴 Long break":"🌴 استراحة طويلة","Pomodoro":"بومودورو","Focus (minutes)":"التركيز (دقائق)","Short break (minutes)":"استراحة قصيرة (دقائق)","Long break (minutes)":"استراحة طويلة (دقائق)","Focus rounds before a long break":"جولات التركيز قبل الاستراحة الطويلة","Start the next focus round automatically":"بدء جولة التركيز التالية تلقائيًا",
+"Notify me when someone changes their name":"أبلغني عندما يغيّر أحدهم اسمه","✏️ Name changes":"✏️ تغييرات الأسماء","Name changes":"تغييرات الأسماء","{a} changed their name to {b}":"{a} غيّر اسمه إلى {b}","Name changed":"تغيير اسم","Someone changes their name":"شخص يغيّر اسمه","Dismiss":"إخفاء",
+"You're offline. Your study time is saved on this device and syncs when you're back.":"أنت غير متصل. يُحفظ وقت مذاكرتك على هذا الجهاز ويتزامن عند عودة الاتصال."};
+const T=s=>cfg.lang==="ar"&&Object.hasOwn(AR,s)?AR[s]:s,AT=["placeholder","aria-label","title"];
+function tx(n){
+ if(n.nodeType===3){const v=n.nodeValue,o=n._t===v?n._o:v,k=o.trim(),r=T(k),out=r===k?o:o.replace(k,()=>r);n._o=o;n._t=out;if(out!==v)n.nodeValue=out;return}
+ if(n.nodeType!==1||/^(SCRIPT|STYLE)$/.test(n.tagName))return;
+ for(const a of AT){const v=n.getAttribute(a);if(v==null)continue;const c=n._oa&&n._oa[a],o=c&&c[1]===v?c[0]:v,out=T(o);(n._oa??={})[a]=[o,out];if(out!==v)n.setAttribute(a,out)}
+ n.childNodes.forEach(tx)}
+function applyLang(){const h=document.documentElement;h.lang=cfg.lang;h.dir=cfg.lang==="ar"?"rtl":"ltr";tx(document.body)}
+new MutationObserver(ms=>{if(cfg.lang!=="ar")return;ms.forEach(m=>m.type==="characterData"?tx(m.target):m.addedNodes.forEach(tx))}).observe(document.body,{childList:true,subtree:true,characterData:true});
+/* day = local 12AM, week = Saturday 12AM, month = the 1st */
+const dk=x=>{x=new Date(x);return`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,0)}-${String(x.getDate()).padStart(2,0)}`};
+const pk=(p,n)=>{const x=new Date(n);x.setHours(0,0,0,0);if(p==="week")x.setDate(x.getDate()-(x.getDay()+1)%7);if(p==="month")x.setDate(1);return dk(x)};
+const sum=(d,p,n)=>{const s=pk(p,n);let t=0;for(const k in d)if(k>=s)t+=d[k];return t};
+function split(a,b){const o={};let c=a,i=0;while(c<b&&i++<70){const x=new Date(c);x.setHours(24,0,0,0);const e=Math.min(b,+x);o[dk(c)]=(o[dk(c)]||0)+(e-c)/1000;c=e}return o}
+const addDays=(d,s)=>{for(const k in s)d[k]=Math.round((d[k]||0)+s[k]);const c=dk(Date.now()-62*864e5);for(const k in d)if(k<c)delete d[k];return d};
+const HELP=[
+["⏱ Study timer","Tap 📖 Study to start counting. 🍵 Break and 🌙 Away pause the clock, ⏹ Stop ends it. Your time is saved when you stop.","⏱ مؤقت المذاكرة","اضغط 📖 مذاكرة لبدء العدّ. 🍵 استراحة و🌙 غائب توقفان الساعة، و⏹ إيقاف ينهي الجلسة. يُحفظ وقتك عند الإيقاف."],
+["📊 Today, week & month","The three numbers under the timer are your study time today, this week and this month. Today resets at 12 AM, the week resets on Saturday at 12 AM, and the month resets on the 1st. Tap All time / Today / Week / Month above the list to rank everyone by that period.","📊 اليوم والأسبوع والشهر","الأرقام الثلاثة تحت المؤقت هي وقت مذاكرتك اليوم وهذا الأسبوع وهذا الشهر. يبدأ اليوم عند 12 صباحًا، ويبدأ الأسبوع يوم السبت عند 12 صباحًا، ويبدأ الشهر في اليوم الأول. اضغط كل الوقت / اليوم / الأسبوع / الشهر فوق القائمة لترتيب الجميع حسب تلك الفترة."],
+["💛 Friends","Type a friend's name tag on Home and tap Add to send a request. Once they accept, tap 💬 to message them. Tap ➕ next to anyone in a group to send them a request.","💛 الأصدقاء","اكتب اسم مستخدم صديقك في الرئيسية واضغط إضافة لإرسال طلب. بعد قبوله اضغط 💬 لمراسلته. اضغط ➕ بجانب أي شخص في مجموعتك لإرسال طلب له."],
+["🔕 Mute, block, hide","Tap ⋯ next to someone. Mute: they stay on your list but you get no sounds or alerts from them. Block: they are removed from your friends, list and chats. Hide: just removes them from your list (tap 👀 to bring everyone back). Undo mute and block in ⚙️ Settings.","🔕 كتم وحظر وإخفاء","اضغط ⋯ بجانب أي شخص. الكتم: يبقى في قائمتك لكن لا تصلك أصوات أو تنبيهات منه. الحظر: يُزال من أصدقائك وقائمتك ومحادثاتك. الإخفاء: يُزال من القائمة فقط (اضغط 👀 لإعادة الجميع). يمكنك التراجع عن الكتم والحظر من ⚙️ الإعدادات."],
+["👭 Groups & invite links","On the Groups tab, create a group and share its tag, or tap 🔗 next to the tag to copy an invite link. Anyone who opens the link can sign up or log in and joins the group automatically. The group owner can remove members with ✕.","👭 المجموعات وروابط الدعوة","في تبويب المجموعات أنشئ مجموعة وشارك رمزها، أو اضغط 🔗 بجانب الرمز لنسخ رابط دعوة. كل من يفتح الرابط يمكنه إنشاء حساب أو تسجيل الدخول وينضم إلى المجموعة تلقائيًا. يمكن لمالك المجموعة إزالة الأعضاء بالضغط على ✕."],
+["💬 Chat","Pick General, a group or a friend from the menu, type your message and press Send. 🔴 means a new group message, 🔵 a new private one.","💬 المحادثة","اختر عام أو مجموعة أو صديقًا من القائمة، واكتب رسالتك ثم اضغط إرسال. 🔴 تعني رسالة جديدة في مجموعة، و🔵 رسالة خاصة جديدة."],
+["🎨 Dark mode, themes, language","Open ⚙️ Settings to switch between light, dark or automatic, pick a theme, or change the language to العربية.","🎨 الوضع الداكن والسمات واللغة","افتح ⚙️ الإعدادات للتبديل بين الفاتح والداكن والتلقائي، أو اختيار سمة، أو تغيير اللغة إلى English."],
+["⏱ Flow vs 🍅 Pomodoro","Flow is a plain stopwatch. Pomodoro counts down focus rounds and breaks for you (🍅 Focus, ☕ short break, 🌴 long break after a few rounds). Switch with the buttons above Study. Only focus time counts as studying. Change the lengths in ⚙️ Settings → Pomodoro.","⏱ تدفق أم 🍅 بومودورو","التدفق ساعة إيقاف عادية. أما بومودورو فيعدّ تنازليًا جولات التركيز والاستراحات (🍅 تركيز، ☕ استراحة قصيرة، 🌴 استراحة طويلة بعد عدة جولات). بدّل بين الوضعين بالأزرار فوق زر المذاكرة. يُحتسب وقت التركيز فقط. يمكنك تغيير المدد من ⚙️ الإعدادات ← بومودورو."],
+["📶 Offline","No internet? Keep studying: the timer keeps counting and your time is saved on this device. It syncs by itself when you're back online or open the site again.","📶 بدون إنترنت","لا يوجد إنترنت؟ واصل المذاكرة: يستمر المؤقت ويُحفظ وقتك على هذا الجهاز، ويتزامن تلقائيًا عند عودة الاتصال أو عند فتح الموقع مرة أخرى."],
+["✏️ Changing your name","You can change your name tag in ⚙️ Settings. Your friends, groups and private chats move with you, and your friends get a notice. You can turn those notices off in Settings → Notifications.","✏️ تغيير اسمك","يمكنك تغيير اسمك من ⚙️ الإعدادات. ينتقل أصدقاؤك ومجموعاتك ومحادثاتك الخاصة معك، ويصلهم إشعار بذلك. يمكنك إيقاف هذه الإشعارات من الإعدادات ← الإشعارات."],
+["🔑 Account","Log in from any device with your name tag and password. Accounts unused for 3 months are deleted.","🔑 الحساب","سجّل الدخول من أي جهاز باسم المستخدم وكلمة المرور. تُحذف الحسابات غير المستخدمة لمدة 3 أشهر."]];
+function help(){const a=cfg.lang==="ar";$("#dlg").innerHTML=`<h3>Help</h3>`+HELP.map(h=>`<p style="margin:8px 0"><b>${h[a?2:0]}</b><br>${h[a?3:1]}</p>`).join("")+`<div style="margin-top:14px;text-align:end"><button id="s-x">Close</button></div>`;$("#dlg").showModal()}
+function person(k){const n=users[k]?.name||k,m=cfg.muted.includes(k);$("#dlg").innerHTML=`<h3>${esc(n)}</h3><div style="display:grid;gap:8px"><button data-mute="${k}">${m?"🔔 Unmute":"🔕 Mute"}</button><button data-hide="${k}">🙈 Hide from list</button><button data-blk="${k}" class="danger">🚫 Block</button></div><p class="empty">Mute: no sounds or alerts from them. Block: removed from your friends, list and chats.</p><div style="margin-top:14px;text-align:end"><button id="s-x">Close</button></div>`;$("#dlg").showModal()}
+applyLook();applyLang();
+/* ---- pomodoro, offline sync, renames ---- */
+let lv=0;
+const pd=ph=>(ph==="focus"?cfg.pm.f:ph==="long"?cfg.pm.l:cfg.pm.s)*60;
+function pomTick(){const p=me.pom;if(cfg.pm.mode!=="pom"||!p||me.status!=="studying"&&me.status!=="break")return;
+ for(let i=0;i<20;i++){const e=p.s+pd(p.ph)*1000;if(now()<e)return;
+  if(p.ph==="focus"){p.n++;p.ph=p.n%cfg.pm.c?"short":"long";p.s=e;setStatus("break",e,1)}
+  else if(cfg.pm.auto){p.ph="focus";p.s=e;setStatus("studying",e,1)}
+  else{me.pom=null;setStatus("idle",e,1);return}}}
+function showTimer(){let s=me.status==="studying"&&me.since?(now()-me.since)/1000:0,l=null;
+ if(cfg.pm.mode==="pom"){pomTick();const p=me.pom;
+  if(p&&(me.status==="studying"||me.status==="break")){s=Math.max(0,pd(p.ph)-(now()-p.s)/1000);l=p.ph==="focus"?T("🍅 Focus {a}/{b}").replace("{a}",p.n%cfg.pm.c+1).replace("{b}",cfg.pm.c):p.ph==="long"?T("🌴 Long break"):T("☕ Short break")}
+  else if(me.status==="idle")s=pd("focus")}
+ $("#sess").textContent=fmt(s);if(l)$("#stl").textContent=l}
+const renderModes=()=>{$("#modes").innerHTML=[["flow","⏱ Flow"],["pom","🍅 Pomodoro"]].map(([m,l])=>`<button class="chip${cfg.pm.mode===m?" on":""}" data-mode="${m}">${l}</button>`).join("")};
+function saveLoc(){if(!ready)return;lv++;cfg.loc={k:key,status:me.status,since:me.since,total:me.total,days:me.days,hb:now()};cfg.off=off;cfg.dirty=1;save()}
+setInterval(()=>{if(ready&&me.status==="studying")saveLoc()},5000);
+/* heartbeat from a worker so background tabs are not throttled into "offline" */
+function beat(){if(Date.now()-hbl>8000)push()}
+try{const w=new Worker(URL.createObjectURL(new Blob(["setInterval(()=>postMessage(1),15000)"])));w.onmessage=()=>{if(ready)beat()}}catch(e){}
+/* someone renamed: move my local block/mute/hide lists to the new tag */
+function remap(o,n){for(const L of["muted","hidden"]){const a=cfg[L];if(a.includes(o)){if(!a.includes(n))a.push(n);cfg[L]=a.filter(x=>x!==o)}}
+ if(cfg.blocked.includes(o)&&!cfg.blocked.includes(n))cfg.blocked.push(n);
+ if(cfg.seen&&cfg.seen["dm:"+o]){cfg.seen["dm:"+n]=cfg.seen["dm:"+o];delete cfg.seen["dm:"+o]}
+ if(chatSel==="dm:"+o)chatSel="dm:"+n}
+function checkRen(){cfg.renT??=now();const mem=new Set(myG().flatMap(([t,g])=>Object.keys(g.members)));
+ Object.entries(users).forEach(([k,u])=>{if(!u||!u.prev||u.prev===k||k===key)return;remap(u.prev,k);
+  if(!u.rt||u.rt<=cfg.renT||cfg.ren[k]===u.rt)return;
+  if(cfg.blocked.includes(k)||cfg.muted.includes(k)){cfg.ren[k]=u.rt;return}
+  if(!(cfg.friends.includes(k)||mem.has(k)))return;
+  cfg.ren[k]=u.rt;cfg.rn.push({a:u.pn||u.prev,b:u.name||k});if(cfg.rn.length>20)cfg.rn.shift();
+  if(cfg.nt.ren){beep("ren");notify(T("Name changed"),T("{a} changed their name to {b}").replace("{a}",u.pn||u.prev).replace("{b}",u.name||k))}});
+ save()}
+const rnH=()=>cfg.rn.length?`<div class="card"><b>✏️ ${T("Name changes")}</b>${cfg.rn.map((x,i)=>`<div class="row" style="margin:6px 0 0"><span class="nm"><b>${T("{a} changed their name to {b}").replace("{a}",esc(x.a)).replace("{b}",esc(x.b))}</b></span><button class="mini" data-rn="${i}" aria-label="Dismiss">✖</button></div>`).join("")}</div>`:"";
+renderModes();
+
+
+let key=null,me={status:"idle",since:null,total:0,days:{}},users={},groups={},off=cfg.off||0,hbl=0,seenLs=null,ready=false,started=false,prevOn={},lastSig="",chatSel="general",lastMsg="",wl=null,reqs={},prevReq=null,unr={},swept=0,busy=0,am="in",lastReq="";
 const now=()=>Date.now()+off;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const fmt=s=>{s=Math.max(0,s|0);return`${s/3600|0}:${String(s%3600/60|0).padStart(2,0)}:${String(s%60).padStart(2,0)}`};
 const av=(u,k)=>u&&/^data:image\//.test(u.pic||"")?`<img src="${u.pic}" alt="">`:EM[[...k].reduce((a,c)=>a+c.charCodeAt(0),0)%EM.length];
 async function api(m,p,b,q=""){const r=await fetch(`${DB}/${p}.json${q}`,{method:m,body:b===undefined?undefined:JSON.stringify(b)});if(!r.ok)throw new Error(r.status);return r.json()}
 const banner=t=>$("#banner").textContent=t;
-const onErr=e=>banner(/40[13]/.test(e.message)?"The database rules are blocking access. Check the Rules tab in Firebase.":"Can't reach the server. Retrying…");
+const onErr=e=>banner(/40[13]/.test(e.message)?"The database rules are blocking access. Check the Rules tab in Firebase.":"You're offline. Your study time is saved on this device and syncs when you're back.");
 let ac;function beep(k){if(!cfg.snd.on||cfg.snd.off.includes(k))return;try{ac??=new AudioContext();S[k].forEach((f,i)=>{const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+i*.11;o.frequency.value=f;g.gain.setValueAtTime(cfg.snd.vol*.3,t);g.gain.exponentialRampToValueAtTime(.001,t+.18);o.connect(g).connect(ac.destination);o.start(t);o.stop(t+.2)})}catch(e){}}
 
 /* ---- people ---- */
 const myG=()=>Object.entries(groups).filter(([t,g])=>g&&g.members&&g.members[key]&&!(g.banned&&g.banned[key])&&!(g.bandev&&g.bandev[cfg.dev]));
 function entry(k){const n=now();let r,on,name;
  if(k===key){r=me;on=true;name=cfg.name}
- else{r=users[k];if(!r)return{k,name:k,st:"offline",total:0,miss:1};on=n-(r.last_seen||0)<45000;name=r.name||k}
- let st=r.status||"idle",total=r.total||0;
- if(st==="studying"&&r.since)total+=Math.max(0,((on?n:(r.last_seen||r.since))-r.since)/1000);
- return{k,name,st:on?st:"offline",total,u:users[k]}}
+ else{r=users[k];if(!r)return{k,name:k,st:"offline",total:0,day:0,week:0,month:0,miss:1};on=n-(r.last_seen||0)<100000;name=r.name||k}
+ let st=r.status||"idle",total=r.total||0,d={...r.days};
+ if(st==="studying"&&r.since){const e=on?n:(r.last_seen||r.since);total+=Math.max(0,(e-r.since)/1000);addDays(d,split(r.since,e))}
+ return{k,name,st:on?st:"offline",total,day:sum(d,"day",n),week:sum(d,"week",n),month:sum(d,"month",n),u:users[k]}}
 function shown(){const s=new Set(),sel=cfg.sel,all=!sel.length;
  if(all||sel.includes("f"))cfg.friends.forEach(k=>s.add(k));
  myG().forEach(([t,g])=>{if(all||sel.includes("g:"+t))Object.keys(g.members).forEach(k=>s.add(k))});
  s.delete(key);return[...s].filter(k=>!cfg.blocked.includes(k)&&!cfg.hidden.includes(k))}
-function renderChips(){const sel=cfg.sel,c=(id,l)=>`<button class="chip${sel.includes(id)?" on":""}" data-chip="${id}">${l}</button>`;
- $("#chips").innerHTML=`<button class="chip${sel.length?"":" on"}" data-chip="all">All</button>`+c("f","💛 Friends")+`<button class="chip" data-chip="gonly">Groups only</button>`+myG().map(([t,g])=>c("g:"+t,"👭 "+esc(g.name))).join("")+(cfg.hidden.length?`<button class="chip" data-chip="unhide">👀 ${cfg.hidden.length} hidden</button>`:"")}
+function renderChips(){$("#pers").innerHTML=[["total","All time"],["day","Today"],["week","Week"],["month","Month"]].map(([p,l])=>`<button class="chip${P()===p?" on":""}" data-per="${p}">${l}</button>`).join("");const sel=cfg.sel,c=(id,l)=>`<button class="chip${sel.includes(id)?" on":""}" data-chip="${id}">${l}</button>`;
+ $("#chips").innerHTML=`<button class="chip${sel.length?"":" on"}" data-chip="all">All</button>`+c("f","💛 Friends")+`<button class="chip" data-chip="gonly">Groups only</button>`+myG().map(([t,g])=>c("g:"+t,"👭 "+esc(g.name))).join("")+(cfg.hidden.length?`<button class="chip" data-chip="unhide">${T("👀 {n} hidden").replace("{n}",cfg.hidden.length)}</button>`:"")}
 const notify=(t,b)=>{try{if(cfg.nt.pop&&document.hidden&&window.Notification&&Notification.permission==="granted")new Notification(t,{body:b})}catch(e){}};
-function renderReqs(){const ks=Object.keys(reqs).filter(k=>!cfg.blocked.includes(k)),h=ks.length?`<div class="card"><b>💌 Friend requests</b>${ks.map(k=>`<div class="row" style="margin:6px 0 0"><span class="nm"><b>${esc(users[k]?.name||k)}</b><small>wants to be friends</small></span><button class="mini" data-acc="${k}">✔ Accept</button><button class="mini" data-dec="${k}" aria-label="Decline">✖</button></div>`).join("")}</div>`:"";if(h!==lastReq){lastReq=h;$("#reqs").innerHTML=h}}
+function renderReqs(){const ks=Object.keys(reqs).filter(k=>!cfg.blocked.includes(k)),h=ks.length?`<div class="card"><b>💌 Friend requests</b>${ks.map(k=>`<div class="row" style="margin:6px 0 0"><span class="nm"><b>${esc(users[k]?.name||k)}</b><small>wants to be friends</small></span><button class="mini" data-acc="${k}">✔ Accept</button><button class="mini" data-dec="${k}" aria-label="Decline">✖</button></div>`).join("")}</div>`:"";const h2=h+rnH();if(h2!==lastReq){lastReq=h2;$("#reqs").innerHTML=h2}}
 function updDots(){const k=Object.keys(unr).filter(x=>unr[x]),on=cfg.nt.dots,n=Object.keys(reqs).length;$("#dr").hidden=!(on&&k.some(x=>x[0]==="g"));$("#db").hidden=!(on&&k.some(x=>x[0]==="d"));$("#dq").hidden=!(on&&n);$("#dq").textContent=n}
 function render(){if(!ready)return;renderChips();renderReqs();
- const es=[key,...shown()].map(entry).sort((a,b)=>b.total-a.total);
- const sig=JSON.stringify(es.map(e=>[e.k,e.st,(e.u?.pic||"").length,e.name,cfg.friends.includes(e.k)]));
- if(sig!==lastSig){lastSig=sig;$("#list").innerHTML=es.map((e,i)=>`<div class="row${e.k===key?" me":""}" data-k="${e.k}"><span class="rk">${i+1}</span><span class="av" style="border-color:${ST[e.st][1]}">${av(e.u,e.k)}</span><span class="nm"><b>${esc(e.name)}</b><small>${e.miss?"Not found yet":ST[e.st][0]}</small></span><span class="t"></span>${e.k===key?"":`${cfg.friends.includes(e.k)?`<button class="mini" data-dm="${e.k}" aria-label="Message">💬</button>`:`<button class="mini" data-rq="${e.k}" aria-label="Send friend request">➕</button>`}<button class="mini" data-blk="${e.k}" aria-label="Ban">🚫</button>`}</div>`).join("")}
- es.forEach(e=>{const el=$(`.row[data-k="${e.k}"] .t`);if(el)el.textContent=fmt(e.total)})}
-function sounds(){shown().forEach(k=>{const on=entry(k).st!=="offline";if(k in prevOn&&prevOn[k]!==on)beep(on?"online":"offline");prevOn[k]=on})}
+ const es=[key,...shown()].map(entry).sort((a,b)=>b[P()]-a[P()]);
+ const sig=JSON.stringify(es.map(e=>[e.k,e.st,(e.u?.pic||"").length,e.name,cfg.friends.includes(e.k),cfg.muted.includes(e.k),P()]));
+ if(sig!==lastSig){lastSig=sig;$("#list").innerHTML=es.map((e,i)=>`<div class="row${e.k===key?" me":""}" data-k="${e.k}"><span class="rk">${i+1}</span><span class="av" style="border-color:${ST[e.st][1]}">${av(e.u,e.k)}</span><span class="nm"><b>${esc(e.name)}</b><small>${e.miss?"Not found yet":ST[e.st][0]}${cfg.muted.includes(e.k)?" <span>🔕</span>":""}</small></span><span class="t"></span>${e.k===key?"":`${cfg.friends.includes(e.k)?`<button class="mini" data-dm="${e.k}" aria-label="Message">💬</button>`:`<button class="mini" data-rq="${e.k}" aria-label="Send friend request">➕</button>`}<button class="mini" data-more="${e.k}" aria-label="More">⋯</button>`}</div>`).join("")}
+ es.forEach(e=>{const el=$(`.row[data-k="${e.k}"] .t`);if(el)el.textContent=fmt(e[P()])})}
+function sounds(){shown().forEach(k=>{const on=entry(k).st!=="offline";if(k in prevOn&&prevOn[k]!==on&&!cfg.muted.includes(k))beep(on?"online":"offline");prevOn[k]=on})}
 
 /* ---- network loops ---- */
-const push=()=>{if(!ready)return;hbl=Date.now();api("PATCH","users/"+key,{name:cfg.name,uid:cfg.uid,status:me.status,since:me.since,total:Math.floor(me.total),last_seen:{".sv":"timestamp"}}).catch(onErr)};
+const push=()=>{if(!ready)return;hbl=Date.now();const v=lv;api("PATCH","users/"+key,{name:cfg.name,uid:cfg.uid,status:me.status,since:me.since,total:Math.floor(me.total),days:me.days,last_seen:{".sv":"timestamp"}}).then(()=>{if(lv===v){cfg.dirty=0;save()}banner("")}).catch(onErr)};
 async function poll(){if(!ready)return;try{const[u,g,rq,fr]=await Promise.all([api("GET","users"),api("GET","groups"),api("GET","requests/"+key),api("GET","friends/"+key)]);users=u||{};groups=g||{};reqs=rq||{};
  const fk=Object.keys(fr||{}),leg=cfg.friends;if(!cfg.mig){cfg.mig=1;leg.filter(k=>!fk.includes(k)).forEach(k=>sendReq(k).catch(()=>0))}cfg.friends=fk;save();
- const ls=users[key]?.last_seen;if(ls&&hbl&&ls!==seenLs){off=ls-hbl;seenLs=ls}banner("");
+ const ls=users[key]?.last_seen;if(ls&&hbl&&ls!==seenLs){if(Date.now()-hbl<20000){off=ls-hbl;cfg.off=off}seenLs=ls}banner("");
  const rk=Object.keys(reqs);if(prevReq&&rk.some(k=>!prevReq.includes(k))){beep("msg");notify("Friend request","Someone wants to be your study buddy")}prevReq=rk;
  if(!swept){swept=1;Object.entries(users).filter(([k,x])=>k!==key&&expired(x)).slice(0,5).forEach(([k])=>purge(k))}
- sounds();render();updDots();if(!$("#v-groups").hidden)renderGroups()}catch(e){onErr(e)}}
+ checkRen();sounds();render();updDots();if(!$("#v-groups").hidden)renderGroups()}catch(e){onErr(e)}}
 async function sendReq(k){if(reqs[k])return accept(k);await api("PUT",`requests/${k}/${key}`,{t:{".sv":"timestamp"}})}
 async function accept(k){await Promise.all([api("PUT",`friends/${key}/${k}`,true),api("PUT",`friends/${k}/${key}`,true),api("DELETE",`requests/${key}/${k}`)])}
 async function checkUnread(){if(!ready||busy)return;busy=1;try{const base=!cfg.seen;cfg.seen??={};
  const L=[...myG().map(([t])=>"g_"+t),...cfg.friends.filter(k=>!cfg.blocked.includes(k)).map(k=>"dm:"+k)];
- await Promise.all(L.map(async id=>{try{const m=await api("GET",cpath(id),undefined,'?orderBy=%22$key%22&limitToLast=1')||{},i=Object.keys(m)[0];if(!i)return;const f=m[i].from,skip=f===key||cfg.blocked.includes(f)||base||(chatSel===id&&!$("#v-chat").hidden&&!document.hidden);
+ await Promise.all(L.map(async id=>{try{const m=await api("GET",cpath(id),undefined,'?orderBy=%22$key%22&limitToLast=1')||{},i=Object.keys(m)[0];if(!i)return;const f=m[i].from,skip=f===key||cfg.old.includes(f)||cfg.blocked.includes(f)||cfg.muted.includes(f)||base||(chatSel===id&&!$("#v-chat").hidden&&!document.hidden);
   if(skip||cfg.seen[id]>=i){if(!(cfg.seen[id]>=i))cfg.seen[id]=i;unr[id]=0;return}
   if(unr[id]!==i){beep("msg");notify("New message",id[0]==="g"?"In "+(groups[id.slice(2)]?.name||"a group"):"From "+(users[id.slice(3)]?.name||"a friend"))}unr[id]=i}catch(e){}}));
  save();updDots()}finally{busy=0}}
-function start(){if(started)return;started=true;setInterval(poll,5000);setInterval(push,15000);setInterval(loadChat,3000);setInterval(checkUnread,7000);checkUnread()}
+function start(){if(started)return;started=true;setInterval(poll,5000);setInterval(beat,15000);setInterval(loadChat,3000);setInterval(checkUnread,7000);checkUnread()}
 const AD=90*864e5,expired=r=>!!(r&&r.last_seen&&now()-r.last_seen>AD);
 const hx=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,0)).join("");
 async function hp(pw,salt){const e=new TextEncoder(),k=await crypto.subtle.importKey("raw",e.encode(pw),"PBKDF2",false,["deriveBits"]);return hx(await crypto.subtle.deriveBits({name:"PBKDF2",hash:"SHA-256",salt:e.encode(salt),iterations:100000},k,256))}
 async function purge(k){try{const[g,f]=await Promise.all([api("GET","groups"),api("GET","friends/"+k)]);await Promise.all([api("DELETE","users/"+k),api("DELETE","friends/"+k),api("DELETE","requests/"+k),...Object.keys(f||{}).map(o=>api("DELETE",`friends/${o}/${k}`)),...Object.entries(g||{}).filter(([t,x])=>x&&x.members&&x.members[k]).map(([t])=>api("DELETE",`groups/${t}/members/${k}`))])}catch(e){}}
-async function migrate(o,n){const f=Object.keys(await api("GET","friends/"+o)||{});await Promise.all([...Object.entries(groups).filter(([t,g])=>g&&g.members&&g.members[o]).flatMap(([t,g])=>[api("PATCH",`groups/${t}/members`,{[n]:true}),api("DELETE",`groups/${t}/members/${o}`),...(g.owner===o?[api("PATCH","groups/"+t,{owner:n})]:[])]),...f.flatMap(x=>[api("PUT",`friends/${x}/${n}`,true),api("DELETE",`friends/${x}/${o}`),api("PUT",`friends/${n}/${x}`,true)]),api("DELETE","friends/"+o),api("DELETE","requests/"+o)]);await api("DELETE","users/"+o)}
-function enter(k,name,r){key=k;cfg.name=name;save();let t=r.total||0;if(r.status==="studying"&&r.since&&r.last_seen)t+=Math.max(0,(r.last_seen-r.since)/1000);me={status:"idle",since:null,total:Math.floor(t)};ready=true;$("#me").textContent=name;hl();push();poll();start();return"ok"}
+async function migrate(o,n){const f=Object.keys(await api("GET","friends/"+o)||{});await Promise.all([...Object.entries(groups).filter(([t,g])=>g&&g.members&&g.members[o]).flatMap(([t,g])=>[api("PATCH",`groups/${t}/members`,{[n]:true}),api("DELETE",`groups/${t}/members/${o}`),...(g.owner===o?[api("PATCH","groups/"+t,{owner:n})]:[])]),...f.flatMap(x=>[api("PUT",`friends/${x}/${n}`,true),api("DELETE",`friends/${x}/${o}`),api("PUT",`friends/${n}/${x}`,true)]),api("DELETE","friends/"+o),api("DELETE","requests/"+o)]);await Promise.all(f.map(async x=>{try{const a="chat/dm_"+[o,x].sort().join("__"),b="chat/dm_"+[n,x].sort().join("__"),m=await api("GET",a);if(!m)return;for(const i in m)if(m[i].from===o)m[i].from=n;await api("PUT",b,m);await api("DELETE",a)}catch(e){}}));await api("DELETE","users/"+o)}
+function enter(k,name,r){key=k;cfg.name=name;save();let t=r.total||0;if(r.status==="studying"&&r.since&&r.last_seen)t+=Math.max(0,(r.last_seen-r.since)/1000);const d={...r.days};if(r.status==="studying"&&r.since&&r.last_seen)addDays(d,split(r.since,r.last_seen));const L=cfg.loc;if(cfg.dirty&&L&&L.k===k){let lt=L.total||0;const ld={...L.days};if(L.status==="studying"&&L.since){lt+=Math.max(0,(L.hb-L.since)/1000);addDays(ld,split(L.since,L.hb))}t=Math.max(t,lt);for(const x in ld)d[x]=Math.max(d[x]||0,ld[x])}
+me={status:"idle",since:null,total:Math.floor(t),days:d};ready=true;$("#me").textContent=name;hl();push();poll();start();if(cfg.pj){const g=cfg.pj;cfg.pj=null;save();joinGroup(g).then(()=>view("groups"))}return"ok"}
 async function claim(name,pw,mode){const k=name.toLowerCase(),old=key;try{let r=await api("GET","users/"+k);
  if(r&&expired(r)&&r.uid!==cfg.uid){await purge(k);r=null}
  if(mode==="in"){if(!r||!r.ph)return"nouser";if(await hp(pw,r.salt)!==r.ph)return"bad";cfg.uid=r.uid;return enter(k,r.name||name,r)}
  if(r&&r.uid!==cfg.uid)return"taken";
- if(mode==="up"){if(r&&r.ph)return"taken";const salt=crypto.randomUUID();await api("PUT","users/"+k,{name,uid:cfg.uid,salt,ph:await hp(pw,salt),pic:r?.pic,status:"idle",total:Math.floor(r?.total||0),dev:cfg.dev,last_seen:{".sv":"timestamp"}});return enter(k,name,r||{})}
- const o=users[old]||{},t=entry(old).total;await api("PUT","users/"+k,{name,uid:cfg.uid,salt:o.salt,ph:o.ph,pic:o.pic,status:"idle",total:Math.floor(t),dev:cfg.dev,last_seen:{".sv":"timestamp"}});
- if(old&&old!==k){groups=await api("GET","groups")||{};await migrate(old,k)}
- return enter(k,name,{total:t})}catch(e){return"err"}}
-function auth(m,msg){am=m;if(!$("#nm").open)$("#nm").showModal();$("#tin").classList.toggle("on",m==="in");$("#tup").classList.toggle("on",m==="up");$("#nin").value=cfg.name||$("#nin").value;$("#nmsg").textContent=msg||"";$("#nh").textContent=m==="in"?"Log in with your name tag and password from any device.":"Pick a name tag (2-20 letters, numbers, _ or -) and a password (6+ characters). Accounts unused for 3 months are deleted and the tag becomes free."}
-async function boot(){if(!cfg.name)return auth("in");try{const k=cfg.name.toLowerCase(),r=await api("GET","users/"+k);if(r&&r.uid===cfg.uid&&r.ph)return enter(k,cfg.name,r);
- if(r&&r.uid===cfg.uid)auth("up","Set a password so you can log in from anywhere 🔒");else auth(r?"in":"up",r?"Please log in again.":"")}catch(e){banner("Can't reach the server. Retrying…");setTimeout(boot,5000)}}
+ if(mode==="up"){if(r&&r.ph)return"taken";const salt=crypto.randomUUID();await api("PUT","users/"+k,{name,uid:cfg.uid,salt,ph:await hp(pw,salt),pic:r?.pic,days:r?.days,status:"idle",total:Math.floor(r?.total||0),dev:cfg.dev,last_seen:{".sv":"timestamp"}});return enter(k,name,r||{})}
+ const o=users[old]||{},t=entry(old).total;await api("PUT","users/"+k,{name,uid:cfg.uid,salt:o.salt,ph:o.ph,pic:o.pic,days:me.days,prev:old,pn:cfg.name,rt:{".sv":"timestamp"},status:"idle",total:Math.floor(t),dev:cfg.dev,last_seen:{".sv":"timestamp"}});
+ if(old&&old!==k){groups=await api("GET","groups")||{};await migrate(old,k);cfg.old.push(old);save()}
+ return enter(k,name,{total:t,days:me.days})}catch(e){return"err"}}
+function auth(m,msg){am=m;if(!$("#nm").open)$("#nm").showModal();$("#tin").classList.toggle("on",m==="in");$("#tup").classList.toggle("on",m==="up");$("#nin").value=cfg.name||$("#nin").value;$("#nmsg").textContent=msg||(cfg.pj?"You've been invited to a group 💌 Sign up (or log in) to join it.":"");$("#nh").textContent=m==="in"?"Log in with your name tag and password from any device.":"Pick a name tag (2-20 letters, numbers, _ or -) and a password (6+ characters). Accounts unused for 3 months are deleted and the tag becomes free."}
+async function boot(){if(!cfg.name)return auth(cfg.pj?"up":"in");try{const k=cfg.name.toLowerCase(),r=await api("GET","users/"+k);if(r&&r.uid===cfg.uid&&r.ph)return enter(k,cfg.name,r);
+ if(r&&r.uid===cfg.uid)auth("up","Set a password so you can log in from anywhere 🔒");else auth(r?"in":"up",r?"Please log in again.":"")}catch(e){const L=cfg.loc;if(L&&L.k===cfg.name.toLowerCase()&&!/40[13]/.test(e.message)){onErr(e);return enter(L.k,cfg.name,{total:L.total,days:L.days,status:L.status,since:L.since,last_seen:L.hb})}banner("Can't reach the server. Retrying…");setTimeout(boot,5000)}}
 $("#nm").addEventListener("cancel",e=>e.preventDefault());$("#tin").onclick=()=>auth("in");$("#tup").onclick=()=>auth("up");
 $("#nok").onclick=async()=>{const n=$("#nin").value.trim(),p=$("#npw").value,m=$("#nmsg");if(!NAME_RE.test(n))return m.textContent="Name tag: 2-20 letters, numbers, _ or -, with at least one letter.";if(p.length<6)return m.textContent="Password needs 6+ characters.";m.textContent="…";const r=await claim(n,p,am);if(r==="ok"){$("#npw").value="";$("#nm").close()}else m.textContent={taken:"That name tag is taken. If it's yours, use Log in.",nouser:"No account with that name tag.",bad:"Wrong password.",err:"Can't reach the server."}[r]};
 
 /* ---- timer ---- */
 function hl(){document.querySelectorAll("[data-s]").forEach(b=>b.classList.toggle("on",b.dataset.s===me.status));document.body.classList.toggle("studying",me.status==="studying");$("#stl").textContent={studying:"studying, you've got this!",break:"break time, sip some tea",away:"away for a bit",idle:"ready when you are"}[me.status]}
-function setStatus(n){if(!ready||me.status===n)return;const t=now(),was=me.status;
- if(was==="studying"&&me.since){me.total+=Math.max(0,(t-me.since)/1000);me.since=null}
- if(n==="studying")me.since=Math.floor(t);me.status=n;
+function setStatus(n,at,auto){if(!ready||me.status===n)return;const t=at??now(),was=me.status;
+ if(was==="studying"&&me.since){me.total+=Math.max(0,(t-me.since)/1000);addDays(me.days,split(me.since,t));me.since=null}
+ if(n==="studying")me.since=Math.floor(t);me.status=n;if(!auto){const p=me.pom;me.pom=cfg.pm.mode==="pom"&&(n==="studying"||n==="break")?{ph:n==="break"?"short":"focus",s:t,n:p?p.n:0}:null}
  if(n==="studying")beep("start");else if(was==="studying")beep("end");
- push();hl();render()}
-setInterval(()=>{if(!ready)return;const s=me.status==="studying"&&me.since?(now()-me.since)/1000:0;$("#sess").textContent=fmt(s);render()},1000);
+ push();saveLoc();hl();render()}
+setInterval(()=>{if(!ready)return;showTimer();const e=entry(key);$("#sd").textContent=fmt(e.day);$("#sw").textContent=fmt(e.week);$("#sm").textContent=fmt(e.month);render()},1000);
 
 /* ---- groups ---- */
-function renderGroups(){$("#glist").innerHTML=myG().map(([t,g])=>{const own=g.owner===key;return`<div class="card"><b>👭 ${esc(g.name)}</b> <span class="tag" data-copy="${t}" title="Tap to copy">#${t}</span><div>${Object.keys(g.members).map(k=>`<span class="pill">${esc(users[k]?.name||k)}${own&&k!==key?` <a data-ban="${t}|${k}" role="button" aria-label="Ban">✕</a>`:""}</span>`).join("")}</div><div style="margin-top:6px;display:flex;gap:8px"><button data-addall="${t}">💛 Add all as friends</button><button data-leave="${t}">Leave</button></div></div>`}).join("")||`<p class="empty">No groups yet. Create one, or enter a tag to join.</p>`}
+function renderGroups(){$("#glist").innerHTML=myG().map(([t,g])=>{const own=g.owner===key;return`<div class="card"><b>👭 ${esc(g.name)}</b> <span class="tag" data-copy="${t}" title="Tap to copy">#${t}</span> <button class="mini lk" data-link="${t}" aria-label="Copy invite link" title="Copy invite link">🔗</button><div>${Object.keys(g.members).map(k=>`<span class="pill">${esc(users[k]?.name||k)}${own&&k!==key?` <a data-ban="${t}|${k}" role="button" aria-label="Ban">✕</a>`:""}</span>`).join("")}</div><div style="margin-top:6px;display:flex;gap:8px"><button data-addall="${t}">💛 Add all as friends</button><button data-leave="${t}">Leave</button></div></div>`}).join("")||`<p class="empty">No groups yet. Create one, or enter a tag to join.</p>`}
 async function mkGroup(){const n=$("#gname").value.trim().slice(0,24);if(!n||!ready)return;const t=Math.random().toString(36).slice(2,7).toUpperCase();try{await api("PUT","groups/"+t,{name:n,owner:key,members:{[key]:true}});$("#gname").value="";await poll()}catch(e){onErr(e)}}
-async function joinGroup(){const t=$("#gtag").value.trim().replace("#","").toUpperCase();if(!t||!ready)return;try{const g=await api("GET","groups/"+t);if(!g)return banner("No group has that tag.");if((g.banned&&g.banned[key])||(g.bandev&&g.bandev[cfg.dev]))return banner("You can't join this group.");await api("PATCH",`groups/${t}/members`,{[key]:true});$("#gtag").value="";banner("");await poll()}catch(e){onErr(e)}}
+async function joinGroup(tg){const t=(tg??$("#gtag").value).trim().replace("#","").toUpperCase();if(!t||!ready)return;try{const g=await api("GET","groups/"+t);if(!g)return banner("No group has that tag.");if((g.banned&&g.banned[key])||(g.bandev&&g.bandev[cfg.dev]))return banner("You can't join this group.");await api("PATCH",`groups/${t}/members`,{[key]:true});$("#gtag").value="";banner("");await poll()}catch(e){onErr(e)}}
 
 /* ---- chat ---- */
 const cpath=(s=chatSel)=>s==="general"?"chat/general":s.startsWith("g_")?"chat/"+s:"chat/dm_"+[key,s.slice(3)].sort().join("__");
 function fillSel(){const o=[["general","🌍 General"],...myG().map(([t,g])=>["g_"+t,"👭 "+g.name]),...cfg.friends.filter(k=>!cfg.blocked.includes(k)).map(k=>["dm:"+k,"💌 "+(users[k]?.name||k)])];
  if(!o.some(x=>x[0]===chatSel))chatSel="general";$("#csel").innerHTML=o.map(([v,l])=>`<option value="${esc(v)}"${v===chatSel?" selected":""}>${unr[v]&&cfg.nt.dots?(v[0]==="g"?"🔴 ":"🔵 "):""}${esc(l)}</option>`).join("")}
 async function loadChat(){if(!ready||$("#v-chat").hidden)return;try{const m=await api("GET",cpath(),undefined,'?orderBy=%22$key%22&limitToLast=60')||{};const last=Object.keys(m).sort().pop();if(last&&!document.hidden&&chatSel!=="general"){cfg.seen??={};cfg.seen[chatSel]=last;unr[chatSel]=0;save();updDots()}const ids=Object.keys(m).sort().filter(i=>!cfg.blocked.includes(m[i].from));const sig=chatSel+ids.join();if(sig===lastMsg)return;lastMsg=sig;const box=$("#msgs");
- box.innerHTML=ids.map(i=>`<div class="m${m[i].from===key?" mine":""}"><small>${esc(m[i].name||m[i].from)}</small>${esc(m[i].text)}</div>`).join("")||`<p class="empty">Nothing here yet. Say hi! 👋</p>`;box.scrollTop=box.scrollHeight}catch(e){onErr(e)}}
+ box.innerHTML=ids.map(i=>`<div class="m${m[i].from===key||cfg.old.includes(m[i].from)?" mine":""}"><small>${esc(m[i].name||m[i].from)}</small>${esc(m[i].text)}</div>`).join("")||`<p class="empty">Nothing here yet. Say hi! 👋</p>`;box.scrollTop=box.scrollHeight}catch(e){onErr(e)}}
 async function send(){const t=$("#cin").value.trim().slice(0,500);if(!t||!ready)return;$("#cin").value="";try{await api("POST",cpath(),{from:key,name:cfg.name,text:t,t:{".sv":"timestamp"}});lastMsg="";loadChat()}catch(e){onErr(e)}}
 function view(v){document.querySelectorAll("section").forEach(s=>s.hidden=s.id!=="v-"+v);document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));if(v==="chat"){fillSel();lastMsg="";loadChat()}if(v==="groups")renderGroups()}
 
 /* ---- settings ---- */
 function settings(){$("#dlg").innerHTML=`<h3>Name</h3><div class="add"><input id="s-name" value="${esc(cfg.name||"")}" maxlength="20"><button id="s-nsave">Save</button></div><small id="s-msg"></small>
 <h3>Profile picture</h3><input type="file" id="s-pic" accept="image/*" style="width:100%">
+<h3>Appearance</h3><label>Mode <select id="s-mode"><option value="auto">Auto (system)</option><option value="light">Light</option><option value="dark">Dark</option></select></label><div style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0">${Object.entries(TH).map(([k,l])=>`<button class="chip${cfg.theme===k?" on":""}" data-th="${k}">${l}</button>`).join("")}</div><label>Language <select id="s-lang"><option value="en">English</option><option value="ar">العربية</option></select></label>
+<h3>Pomodoro</h3><label>Focus (minutes) <input type="number" min="1" max="180" data-pm="f" value="${cfg.pm.f}" style="width:80px"></label><label>Short break (minutes) <input type="number" min="1" max="180" data-pm="s" value="${cfg.pm.s}" style="width:80px"></label><label>Long break (minutes) <input type="number" min="1" max="180" data-pm="l" value="${cfg.pm.l}" style="width:80px"></label><label>Focus rounds before a long break <input type="number" min="1" max="180" data-pm="c" value="${cfg.pm.c}" style="width:80px"></label><label><input type="checkbox" data-pm="auto" ${cfg.pm.auto?"checked":""}> Start the next focus round automatically</label>
 <h3>Background</h3><label><input type="checkbox" id="s-bg" ${cfg.bg?"checked":""}> Keep running (keeps the screen awake)</label>
-<h3>Notifications</h3><label><input type="checkbox" id="s-dots" ${cfg.nt.dots?"checked":""}> Dots for new messages (🔴 groups, 🔵 DMs)</label><label><input type="checkbox" id="s-pop" ${cfg.nt.pop?"checked":""}> Pop-up notifications when the tab is hidden</label>
+<h3>Notifications</h3><label><input type="checkbox" id="s-dots" ${cfg.nt.dots?"checked":""}> Dots for new messages (🔴 groups, 🔵 DMs)</label><label><input type="checkbox" id="s-pop" ${cfg.nt.pop?"checked":""}> Pop-up notifications when the tab is hidden</label><label><input type="checkbox" id="s-ren" ${cfg.nt.ren?"checked":""}> Notify me when someone changes their name</label>
 <h3>Sounds</h3><label><input type="checkbox" id="s-on" ${cfg.snd.on?"checked":""}> Sounds on</label><label>Volume <input type="range" id="s-vol" min="0" max="1" step=".05" value="${cfg.snd.vol}"></label>${Object.keys(S).map(k=>`<label><input type="checkbox" data-snd="${k}" ${cfg.snd.off.includes(k)?"":"checked"}> ${SL[k]}</label>`).join("")}
-<h3>Banned friends</h3>${cfg.blocked.map(k=>`<span class="pill">${esc(users[k]?.name||k)} <a data-unblk="${k}" role="button">undo</a></span>`).join("")||"<small>Nobody.</small>"}
-<h3>Your data</h3><div style="display:flex;gap:8px"><button id="s-exp">Export</button><button id="s-del" class="danger">Reset to zero</button><button id="s-out">Log out</button></div>
-<div style="margin-top:14px;text-align:right"><button id="s-x">Close</button></div>`;$("#dlg").showModal()}
+<h3>Muted people</h3>${cfg.muted.map(k=>`<span class="pill">${esc(users[k]?.name||k)} <a data-unmute="${k}" role="button">undo</a></span>`).join("")||"<small>Nobody.</small>"}
+<h3>Blocked people</h3>${cfg.blocked.map(k=>`<span class="pill">${esc(users[k]?.name||k)} <a data-unblk="${k}" role="button">undo</a></span>`).join("")||"<small>Nobody.</small>"}
+<h3>Your data</h3><div style="display:flex;gap:8px"><button id="s-del" class="danger">Reset to zero</button><button id="s-out">Log out</button></div>
+<div style="margin-top:14px;text-align:end"><button id="s-x">Close</button></div>`;$("#s-mode").value=cfg.mode;$("#s-lang").value=cfg.lang;$("#dlg").showModal()}
 function pic(f){const im=new Image();im.onload=()=>{const c=document.createElement("canvas");c.width=c.height=64;const s=Math.min(im.width,im.height);c.getContext("2d").drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,64,64);api("PATCH","users/"+key,{pic:c.toDataURL("image/jpeg",.7)}).then(poll).catch(onErr)};im.src=URL.createObjectURL(f)}
 async function bg(){try{if(cfg.bg&&"wakeLock"in navigator)wl=await navigator.wakeLock.request("screen");else{wl?.release();wl=null}}catch(e){}}
 $("#dlg").addEventListener("change",e=>{const t=e.target;
  if(t.id==="s-pic"&&t.files[0])pic(t.files[0]);
  if(t.id==="s-bg"){cfg.bg=t.checked;bg()}
  if(t.id==="s-on"){cfg.snd.on=t.checked}
+ if(t.id==="s-mode"){cfg.mode=t.value;applyLook()}
+ if(t.id==="s-lang"){cfg.lang=t.value;applyLang();lastSig="";render()}
  if(t.id==="s-dots"){cfg.nt.dots=t.checked;updDots()}
+ if(t.id==="s-ren")cfg.nt.ren=t.checked;
  if(t.id==="s-pop"){cfg.nt.pop=t.checked;if(t.checked&&window.Notification)Notification.requestPermission()}
+ if(t.dataset.pm){cfg.pm[t.dataset.pm]=t.type==="checkbox"?t.checked:Math.max(1,Math.min(180,Math.round(+t.value)||1))}
  if(t.dataset.snd){const o=cfg.snd.off,k=t.dataset.snd,i=o.indexOf(k);t.checked?i>-1&&o.splice(i,1):i<0&&o.push(k);beep(k)}
  save()});
 $("#dlg").addEventListener("input",e=>{if(e.target.id==="s-vol"){cfg.snd.vol=+e.target.value;save();beep("click")}});
 $("#dlg").addEventListener("click",async e=>{const t=e.target;
  if(t.id==="s-x")$("#dlg").close();
- if(t.id==="s-nsave"){const n=$("#s-name").value.trim();if(!NAME_RE.test(n))return $("#s-msg").textContent="Use 2-20 letters, numbers, _ or -.";const r=await claim(n,"","ren");$("#s-msg").textContent=r==="ok"?"Saved! Friends will need your new tag.":r==="taken"?"Already taken.":"Can't reach the server."}
+ if(t.dataset.th){cfg.theme=t.dataset.th;save();applyLook();document.querySelectorAll("[data-th]").forEach(b=>b.classList.toggle("on",b===t))}
+ if(t.dataset.unmute){cfg.muted=cfg.muted.filter(k=>k!==t.dataset.unmute);save();lastSig="";render();settings()}
+ if(t.id==="s-nsave"){const n=$("#s-name").value.trim();if(!NAME_RE.test(n))return $("#s-msg").textContent="Use 2-20 letters, numbers, _ or -.";const r=await claim(n,"","ren");$("#s-msg").textContent=r==="ok"?"Saved! Your friends and groups came with you, and they'll be told.":r==="taken"?"Already taken.":"Can't reach the server."}
  if(t.dataset.unblk){cfg.blocked=cfg.blocked.filter(k=>k!==t.dataset.unblk);save();lastSig="";render();settings()}
- if(t.id==="s-out"&&confirm("Log out on this device?")){cfg.name=null;cfg.uid=crypto.randomUUID();save();location.reload()}
- if(t.id==="s-exp"){const b=new Blob([JSON.stringify({name:cfg.name,total:Math.floor(entry(key).total),friends:cfg.friends,banned:cfg.blocked,groups:myG().map(([t,g])=>({tag:t,name:g.name})),exported:new Date().toISOString()},null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="study-buddy-data.json";a.click()}
- if(t.id==="s-del"&&confirm("Reset all your study time to zero? This can't be undone.")){me={status:"idle",since:null,total:0};hl();try{await api("PATCH","users/"+key,{total:0,status:"idle",since:null});poll()}catch(x){onErr(x)}}});
+ if(t.id==="s-out"&&confirm(T("Log out on this device?"))){cfg.name=null;cfg.loc=null;cfg.dirty=0;cfg.uid=crypto.randomUUID();save();location.reload()}
+ if(t.id==="s-del"&&confirm(T("Reset all your study time to zero? This can't be undone."))){me={status:"idle",since:null,total:0,days:{}};hl();saveLoc();try{await api("PATCH","users/"+key,{total:0,days:null,status:"idle",since:null});poll()}catch(x){onErr(x)}}});
 
 /* ---- clicks ---- */
 document.addEventListener("click",e=>{const t=e.target,c=t.closest("button,a,.tag");if(c)beep("click");
@@ -231,17 +353,27 @@ document.addEventListener("click",e=>{const t=e.target,c=t.closest("button,a,.ta
  const rq=t.closest("[data-rq]");if(rq)sendReq(rq.dataset.rq).then(()=>banner("Friend request sent 💌")).catch(onErr);
  const ac=t.closest("[data-acc]");if(ac)accept(ac.dataset.acc).then(poll).catch(onErr);
  const dc=t.closest("[data-dec]");if(dc)api("DELETE",`requests/${key}/${dc.dataset.dec}`).then(poll).catch(onErr);
- const bl=t.closest("[data-blk]");if(bl){const k=bl.dataset.blk;if(confirm(`Ban ${users[k]?.name||k} from your friends? They'll vanish from your list and chats.`)){cfg.blocked.push(k);cfg.friends=cfg.friends.filter(x=>x!==k);save();[`friends/${key}/${k}`,`friends/${k}/${key}`,`requests/${key}/${k}`].forEach(p=>api("DELETE",p).catch(onErr));lastSig="";render()}}
- const cp=t.closest("[data-copy]");if(cp)navigator.clipboard?.writeText(cp.dataset.copy);
- const ba=t.closest("[data-ban]");if(ba){const[g,k]=ba.dataset.ban.split("|");if(confirm("Ban this member from the group?"))Promise.all([api("PATCH",`groups/${g}/banned`,{[k]:true}),api("DELETE",`groups/${g}/members/${k}`),...(users[k]?.dev?[api("PATCH",`groups/${g}/bandev`,{[users[k].dev]:true})]:[])]).then(poll).catch(onErr)}
+ const bl=t.closest("[data-blk]");if(bl){const k=bl.dataset.blk;if(confirm(T("Block {n}? They'll vanish from your friends, list and chats.").replace("{n}",users[k]?.name||k))){cfg.blocked.push(k);cfg.friends=cfg.friends.filter(x=>x!==k);save();[`friends/${key}/${k}`,`friends/${k}/${key}`,`requests/${key}/${k}`].forEach(p=>api("DELETE",p).catch(onErr));lastSig="";render();$("#dlg").close()}}
+ const cp=t.closest("[data-copy]");if(cp){navigator.clipboard?.writeText(cp.dataset.copy);banner("Tag copied 📋")}
+ const lk=t.closest("[data-link]");if(lk){const u=location.href.split(/[?#]/)[0]+"?join="+lk.dataset.link;(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(()=>banner("Invite link copied 🔗")).catch(()=>prompt(T("Copy this invite link:"),u))}
+ const mo=t.closest("[data-more]");if(mo)person(mo.dataset.more);
+ const mu=t.closest("[data-mute]");if(mu){const k=mu.dataset.mute,i=cfg.muted.indexOf(k);i<0?cfg.muted.push(k):cfg.muted.splice(i,1);save();lastSig="";render();$("#dlg").close()}
+ const hd=t.closest("[data-hide]");if(hd){cfg.hidden.push(hd.dataset.hide);save();lastSig="";render();$("#dlg").close()}
+ const md=t.closest("[data-mode]");if(md){if(me.status!=="idle")setStatus("idle");cfg.pm.mode=md.dataset.mode;me.pom=null;save();renderModes();hl();showTimer()}
+ const rn=t.closest("[data-rn]");if(rn){cfg.rn.splice(+rn.dataset.rn,1);save();lastReq="";renderReqs()}
+ const pr=t.closest("[data-per]");if(pr){cfg.per=pr.dataset.per;save();lastSig="";render()}
+ const ba=t.closest("[data-ban]");if(ba){const[g,k]=ba.dataset.ban.split("|");if(confirm(T("Ban this member from the group?")))Promise.all([api("PATCH",`groups/${g}/banned`,{[k]:true}),api("DELETE",`groups/${g}/members/${k}`),...(users[k]?.dev?[api("PATCH",`groups/${g}/bandev`,{[users[k].dev]:true})]:[])]).then(poll).catch(onErr)}
  const aa=t.closest("[data-addall]");if(aa){Object.keys(groups[aa.dataset.addall].members).filter(k=>k!==key&&!cfg.friends.includes(k)&&!cfg.blocked.includes(k)).forEach(k=>sendReq(k).catch(onErr));banner("Friend requests sent 💌")}
- const lv=t.closest("[data-leave]");if(lv&&confirm("Leave this group?"))api("DELETE",`groups/${lv.dataset.leave}/members/${key}`).then(poll).catch(onErr)});
+ const lv=t.closest("[data-leave]");if(lv&&confirm(T("Leave this group?")))api("DELETE",`groups/${lv.dataset.leave}/members/${key}`).then(poll).catch(onErr)});
 document.addEventListener("contextmenu",e=>{const r=e.target.closest(".row");if(r&&r.dataset.k!==key){e.preventDefault();cfg.hidden.push(r.dataset.k);save();lastSig="";render()}});
-$("#gear").onclick=settings;$("#gmk").onclick=mkGroup;$("#gjoin").onclick=joinGroup;$("#csend").onclick=send;
+if(!document.documentElement.requestFullscreen)$("#fs").hidden=true;$("#fs").onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();
+$("#gear").onclick=settings;$("#help").onclick=help;$("#gmk").onclick=mkGroup;$("#gjoin").onclick=()=>joinGroup();$("#csend").onclick=send;
 $("#cin").onkeydown=e=>{if(e.key==="Enter")send()};$("#csel").onchange=e=>{chatSel=e.target.value;lastMsg="";loadChat()};
-async function addFriend(){const k=$("#fin").value.trim().toLowerCase();$("#fin").value="";if(!k)return;if(!NAME_RE.test(k)||k===key||cfg.friends.includes(k)||cfg.blocked.includes(k))return banner("That name tag is invalid, already a friend, or banned.");let m="";try{if(!await api("GET",`users/${k}/name`))return banner("Nobody has that name tag.");const acc=!!reqs[k];await sendReq(k);m=acc?"":"Friend request sent 💌 They'll see it on their Home screen."}catch(e){return onErr(e)}await poll();banner(m)}
+async function addFriend(){const k=$("#fin").value.trim().toLowerCase();$("#fin").value="";if(!k)return;if(!NAME_RE.test(k)||k===key||cfg.friends.includes(k)||cfg.blocked.includes(k))return banner("That name tag is invalid, already a friend, or blocked.");let m="";try{if(!await api("GET",`users/${k}/name`))return banner("Nobody has that name tag.");const acc=!!reqs[k];await sendReq(k);m=acc?"":"Friend request sent 💌 They'll see it on their Home screen."}catch(e){return onErr(e)}await poll();banner(m)}
 $("#fadd").onclick=addFriend;$("#fin").onkeydown=e=>{if(e.key==="Enter")addFriend()};
 document.addEventListener("visibilitychange",()=>{if(!document.hidden){bg();push();poll()}});
-addEventListener("pagehide",()=>{if(!ready)return;let t=me.total;if(me.status==="studying"&&me.since)t+=(now()-me.since)/1000;fetch(`${DB}/users/${key}.json`,{method:"PATCH",keepalive:true,body:JSON.stringify({status:"offline",since:null,total:Math.floor(t),last_seen:{".sv":"timestamp"}})})});
+addEventListener("pagehide",()=>{if(!ready)return;saveLoc();let t=me.total;const d={...me.days};if(me.status==="studying"&&me.since){t+=(now()-me.since)/1000;addDays(d,split(me.since,now()))}fetch(`${DB}/users/${key}.json`,{method:"PATCH",keepalive:true,body:JSON.stringify({status:"offline",since:null,total:Math.floor(t),days:d,last_seen:{".sv":"timestamp"}})})});
+addEventListener("online",()=>{push();poll()});
+if("serviceWorker"in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register("sw.js").catch(()=>{});
 boot();
 </script></body></html>
