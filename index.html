@@ -2,6 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Study Buddy</title>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#ff9ebb"><link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Cairo:wght@500;600&display=swap" rel="stylesheet">
 <style>
 :root{--ta:#ff9ebb;--tb:#ffe08a;--tc:#c9b6ff;--ink:#3d2645;--paper:#fff4ec;--card:#fff;--me:#ffe3ee;--g1:#ffd9e6;--g2:#e3d9ff;--err:#c0264f;--dng:#ffc9d4;--pink:var(--ta);--but:var(--tb);--lav:var(--tc);--mint:#9fe3c3;--peach:#ffb38a}
@@ -72,11 +73,19 @@ html:fullscreen body{max-width:none}
 #help{display:flex;gap:6px;align-items:center;margin:0 auto 10px;padding:2px 12px 2px 4px;font-size:13px;box-shadow:0 2px 0 var(--ink)}
 #help i{width:20px;height:20px;border-radius:50%;background:var(--lav);border:2px solid var(--ink);display:grid;place-items:center;font:700 12px/1 Georgia,serif}
 html[lang=ar] body{font-family:Cairo,Fredoka,ui-rounded,system-ui,sans-serif}
+#timer{position:relative}#pen{position:absolute;top:8px;inset-inline-end:8px}
+#mini,#inst{display:none}#mini .av{width:40px;height:40px}
+body[data-small] header h1,body[data-small] header b,body[data-small] #gear,body[data-small] #fs,body[data-small] nav,body[data-small] footer,body[data-small] #modes,body[data-small] #reqs,body[data-small] #pers,body[data-small] #chips,body[data-small] .add,body[data-small] #hint,body[data-small] #list,body[data-small] #v-chat,body[data-small] #v-groups,body[data-small] #pen,body[data-small] #stats{display:none!important}
+body[data-small] #v-home{display:block!important}body[data-small] header{padding:4px 8px 0}body[data-small] main{padding:4px 8px}body[data-small] #timer{margin:2px 0 8px;padding:8px 4px}body[data-small] #sess{font-size:min(54px,16vw)}
+body[data-small=friends] #timer,body[data-small=friends] #btns{display:none}
+body[data-small=friends] #mini,body[data-small=both] #mini{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+body[data-small=timer] #mini{display:none}
+html:not([data-sa]) #inst{display:none}html[data-sa] #inst{display:inline-block}
 </style></head><body>
-<header><h1>Study Buddy <span id="mascot">🍓</span></h1><b id="me"></b><button id="fs" aria-label="Full screen">⛶</button><button id="gear" aria-label="Settings">⚙️</button></header>
+<header><h1>Study Buddy <span id="mascot">🍓</span></h1><b id="me"></b><button id="pip" aria-label="Floating window" title="Floating window" hidden>🗗</button><button id="inst" aria-label="Install app" title="Install app">⬇️</button><button id="fs" aria-label="Full screen">⛶</button><button id="gear" aria-label="Settings">⚙️</button></header>
 <main>
 <section id="v-home">
- <div id="timer"><div id="sess">0:00:00</div><small id="stl">ready when you are</small><div id="stats"><span><small>Today</small><b id="sd">0:00:00</b></span><span><small>This week</small><b id="sw">0:00:00</b></span><span><small>This month</small><b id="sm">0:00:00</b></span></div></div>
+ <div id="timer"><button id="pen" class="mini" aria-label="Edit timer" title="Edit timer" hidden>✏️</button><div id="sess">0:00:00</div><small id="stl">ready when you are</small><div id="stats"><span><small>Today</small><b id="sd">0:00:00</b></span><span><small>This week</small><b id="sw">0:00:00</b></span><span><small>This month</small><b id="sm">0:00:00</b></span></div></div>
  <div id="modes"></div>
  <div id="btns">
   <button data-s="studying" style="--c:var(--mint)">📖 Study</button>
@@ -84,7 +93,7 @@ html[lang=ar] body{font-family:Cairo,Fredoka,ui-rounded,system-ui,sans-serif}
   <button data-s="away" style="--c:var(--peach)">🌙 Away</button>
   <button data-s="idle" style="--c:var(--lav)">⏹ Stop</button>
  </div>
- <div id="reqs"></div><div id="pers"></div><div id="chips"></div><div id="list"></div>
+ <div id="mini"></div><div id="reqs"></div><div id="pers"></div><div id="chips"></div><div id="list"></div>
  <div class="add"><input id="fin" placeholder="Add a friend's name tag"><button id="fadd">Add</button></div>
  <p id="hint">Tap ⋯ to mute, block or hide someone.</p>
 </section>
@@ -112,16 +121,16 @@ const EM=["🐰","🐱","🐻","🦊","🐼","🐸","🐥","🦄","🐙","🐹"]
 const S={online:[660,880],offline:[520,390],start:[523,659,784],end:[784,659,523],click:[1000],msg:[880,1175],ren:[740,988]};
 const SL={online:"Friend comes online",offline:"Friend goes offline",start:"Timer starts",end:"Timer ends",click:"Button click",msg:"New message / friend request",ren:"Someone changes their name"};
 let cfg={};try{cfg=JSON.parse(localStorage.sb||"{}")}catch(e){}
-cfg.uid??=crypto.randomUUID();cfg.friends??=[];cfg.blocked??=[];cfg.hidden??=[];cfg.sel??=[];cfg.dms??=[];cfg.snd??={on:true,vol:.5,off:[]};cfg.nt??={dots:true,pop:false};cfg.dev??=crypto.randomUUID();
+cfg.uid??=crypto.randomUUID();cfg.friends??=[];cfg.blocked??=[];cfg.hidden??=[];cfg.sel??=[];cfg.dms??=[];cfg.snd??={on:true,vol:.5,off:[]};cfg.nt??={dots:true,pop:false};cfg.dev??=crypto.randomUUID();cfg.sm??="normal";
 const save=()=>{try{localStorage.sb=JSON.stringify(cfg)}catch(e){}};
 /* ---- look, language, dates ---- */
-const TH={strawberry:"🍓 Strawberry",mint:"🌿 Mint",ocean:"🌊 Ocean",sunset:"🌅 Sunset"},mq=matchMedia("(prefers-color-scheme: dark)"),P=()=>cfg.per||"total";
+const TH={strawberry:"🍓 Strawberry",mint:"🌿 Mint",ocean:"🌊 Ocean",sunset:"🌅 Sunset"},mq=matchMedia("(prefers-color-scheme: dark)"),P=()=>cfg.per==="week"?"week":"day";
 cfg.muted??=[];cfg.pm={mode:"flow",f:25,s:5,l:15,c:4,auto:true,...cfg.pm};cfg.rn??=[];cfg.ren??={};cfg.old??=[];cfg.nt.ren??=true;cfg.mode??="auto";cfg.theme??="strawberry";cfg.lang??=/^ar/i.test(navigator.language||"")?"ar":"en";
 try{const j=new URLSearchParams(location.search).get("join");if(j&&/^[A-Za-z0-9]{3,8}$/.test(j)){cfg.pj=j.toUpperCase();save();history.replaceState(null,"",location.href.split(/[?#]/)[0])}}catch(e){}
 function applyLook(){const h=document.documentElement;h.dataset.theme=cfg.theme;if(cfg.mode==="dark"||cfg.mode==="auto"&&mq.matches)h.dataset.dark="1";else delete h.dataset.dark}
 mq.addEventListener("change",applyLook);
 const AR={"ready when you are":"جاهز متى شئت","studying, you've got this!":"تذاكر الآن، أنت قادر على ذلك!","break time, sip some tea":"وقت الاستراحة، اشرب بعض الشاي","away for a bit":"غائب قليلًا",
-"📖 Study":"📖 مذاكرة","🍵 Break":"🍵 استراحة","🌙 Away":"🌙 غائب","⏹ Stop":"⏹ إيقاف","Today":"اليوم","This week":"هذا الأسبوع","This month":"هذا الشهر","All time":"كل الوقت","Week":"الأسبوع","Month":"الشهر",
+"📖 Study":"📖 مذاكرة","🍵 Break":"🍵 استراحة","🌙 Away":"🌙 غائب","⏹ Stop":"⏹ إيقاف","Today":"اليوم","This week":"هذا الأسبوع","This month":"هذا الشهر","Daily":"يومي","Weekly":"أسبوعي","Week":"الأسبوع","Month":"الشهر","✏️":"✏️","Edit timer":"تعديل المؤقت","When the window is small":"عندما تكون النافذة صغيرة","Normal (nothing changes)":"عادي (لا شيء يتغير)","Timer only":"المؤقت فقط","Active friends only":"الأصدقاء النشطون فقط","Timer + active friends":"المؤقت + الأصدقاء النشطون","Install app":"تثبيت التطبيق","Floating window":"نافذة عائمة","Show the timer in notifications / taskbar icon":"إظهار المؤقت في الإشعارات / أيقونة شريط المهام","Study Buddy":"Study Buddy","Pomodoro":"بومودورو",
 "All":"الكل","💛 Friends":"💛 الأصدقاء","Groups only":"المجموعات فقط","👀 {n} hidden":"👀 {n} مخفي","Add a friend's name tag":"أضف اسم مستخدم صديق","Add":"إضافة","Tap ⋯ to mute, block or hide someone.":"اضغط ⋯ لكتم شخص أو حظره أو إخفائه.",
 "🏠 Home":"🏠 الرئيسية","💬 Chat":"💬 المحادثة","👭 Groups":"👭 المجموعات","Help":"مساعدة","Say something nice":"قل شيئًا لطيفًا","Send":"إرسال","🌍 General":"🌍 عام","Nothing here yet. Say hi! 👋":"لا شيء هنا بعد. قل مرحبًا! 👋",
 "New group name":"اسم المجموعة الجديد","Create":"إنشاء","Group tag to join":"رمز المجموعة للانضمام","Join":"انضمام","No groups yet. Create one, or enter a tag to join.":"لا توجد مجموعات بعد. أنشئ مجموعة أو أدخل رمزًا للانضمام.",
@@ -164,19 +173,24 @@ function split(a,b){const o={};let c=a,i=0;while(c<b&&i++<70){const x=new Date(c
 const addDays=(d,s)=>{for(const k in s)d[k]=Math.round((d[k]||0)+s[k]);const c=dk(Date.now()-62*864e5);for(const k in d)if(k<c)delete d[k];return d};
 const HELP=[
 ["⏱ Study timer","Tap 📖 Study to start counting. 🍵 Break and 🌙 Away pause the clock, ⏹ Stop ends it. Your time is saved when you stop.","⏱ مؤقت المذاكرة","اضغط 📖 مذاكرة لبدء العدّ. 🍵 استراحة و🌙 غائب توقفان الساعة، و⏹ إيقاف ينهي الجلسة. يُحفظ وقتك عند الإيقاف."],
-["📊 Today, week & month","The three numbers under the timer are your study time today, this week and this month. Today resets at 12 AM, the week resets on Saturday at 12 AM, and the month resets on the 1st. Tap All time / Today / Week / Month above the list to rank everyone by that period.","📊 اليوم والأسبوع والشهر","الأرقام الثلاثة تحت المؤقت هي وقت مذاكرتك اليوم وهذا الأسبوع وهذا الشهر. يبدأ اليوم عند 12 صباحًا، ويبدأ الأسبوع يوم السبت عند 12 صباحًا، ويبدأ الشهر في اليوم الأول. اضغط كل الوقت / اليوم / الأسبوع / الشهر فوق القائمة لترتيب الجميع حسب تلك الفترة."],
+["📊 Today, week & month","The three numbers under the timer are your study time today, this week and this month. Today resets at 12 AM, the week resets on Saturday at 12 AM, and the month resets on the 1st. Tap Daily / Weekly above the list to rank everyone. Today, week and month are only shown for you.","📊 اليوم والأسبوع والشهر","الأرقام الثلاثة تحت المؤقت هي وقت مذاكرتك اليوم وهذا الأسبوع وهذا الشهر. يبدأ اليوم عند 12 صباحًا، ويبدأ الأسبوع يوم السبت عند 12 صباحًا، ويبدأ الشهر في اليوم الأول. اضغط يومي / أسبوعي فوق القائمة لترتيب الجميع. اليوم والأسبوع والشهر تظهر لك وحدك."],
 ["💛 Friends","Type a friend's name tag on Home and tap Add to send a request. Once they accept, tap 💬 to message them. Tap ➕ next to anyone in a group to send them a request.","💛 الأصدقاء","اكتب اسم مستخدم صديقك في الرئيسية واضغط إضافة لإرسال طلب. بعد قبوله اضغط 💬 لمراسلته. اضغط ➕ بجانب أي شخص في مجموعتك لإرسال طلب له."],
 ["🔕 Mute, block, hide","Tap ⋯ next to someone. Mute: they stay on your list but you get no sounds or alerts from them. Block: they are removed from your friends, list and chats. Hide: just removes them from your list (tap 👀 to bring everyone back). Undo mute and block in ⚙️ Settings.","🔕 كتم وحظر وإخفاء","اضغط ⋯ بجانب أي شخص. الكتم: يبقى في قائمتك لكن لا تصلك أصوات أو تنبيهات منه. الحظر: يُزال من أصدقائك وقائمتك ومحادثاتك. الإخفاء: يُزال من القائمة فقط (اضغط 👀 لإعادة الجميع). يمكنك التراجع عن الكتم والحظر من ⚙️ الإعدادات."],
 ["👭 Groups & invite links","On the Groups tab, create a group and share its tag, or tap 🔗 next to the tag to copy an invite link. Anyone who opens the link can sign up or log in and joins the group automatically. The group owner can remove members with ✕.","👭 المجموعات وروابط الدعوة","في تبويب المجموعات أنشئ مجموعة وشارك رمزها، أو اضغط 🔗 بجانب الرمز لنسخ رابط دعوة. كل من يفتح الرابط يمكنه إنشاء حساب أو تسجيل الدخول وينضم إلى المجموعة تلقائيًا. يمكن لمالك المجموعة إزالة الأعضاء بالضغط على ✕."],
 ["💬 Chat","Pick General, a group or a friend from the menu, type your message and press Send. 🔴 means a new group message, 🔵 a new private one.","💬 المحادثة","اختر عام أو مجموعة أو صديقًا من القائمة، واكتب رسالتك ثم اضغط إرسال. 🔴 تعني رسالة جديدة في مجموعة، و🔵 رسالة خاصة جديدة."],
 ["🎨 Dark mode, themes, language","Open ⚙️ Settings to switch between light, dark or automatic, pick a theme, or change the language to العربية.","🎨 الوضع الداكن والسمات واللغة","افتح ⚙️ الإعدادات للتبديل بين الفاتح والداكن والتلقائي، أو اختيار سمة، أو تغيير اللغة إلى English."],
-["⏱ Flow vs 🍅 Pomodoro","Flow is a plain stopwatch. Pomodoro counts down focus rounds and breaks for you (🍅 Focus, ☕ short break, 🌴 long break after a few rounds). Switch with the buttons above Study. Only focus time counts as studying. Change the lengths in ⚙️ Settings → Pomodoro.","⏱ تدفق أم 🍅 بومودورو","التدفق ساعة إيقاف عادية. أما بومودورو فيعدّ تنازليًا جولات التركيز والاستراحات (🍅 تركيز، ☕ استراحة قصيرة، 🌴 استراحة طويلة بعد عدة جولات). بدّل بين الوضعين بالأزرار فوق زر المذاكرة. يُحتسب وقت التركيز فقط. يمكنك تغيير المدد من ⚙️ الإعدادات ← بومودورو."],
+["⏱ Flow vs 🍅 Pomodoro","Flow is a plain stopwatch. Pomodoro counts down focus rounds and breaks for you (🍅 Focus, ☕ short break, 🌴 long break after a few rounds). Switch with the buttons above Study. Only focus time counts as studying. Change the lengths with the ✏️ on the timer.","⏱ تدفق أم 🍅 بومودورو","التدفق ساعة إيقاف عادية. أما بومودورو فيعدّ تنازليًا جولات التركيز والاستراحات (🍅 تركيز، ☕ استراحة قصيرة، 🌴 استراحة طويلة بعد عدة جولات). بدّل بين الوضعين بالأزرار فوق زر المذاكرة. يُحتسب وقت التركيز فقط. يمكنك تغيير المدد بالضغط على ✏️ في المؤقت."],
+["🗗 Floating window, app & notifications","Tap 🗗 next to full screen to pop the timer out into a small window that stays on top (on Android it uses picture-in-picture). Tap ⬇️ to install Study Buddy as an app. Turn on Settings → Notifications → Show the timer in notifications to see it in your Android notifications, or as a badge on the taskbar icon on Windows (install the app first).","🗗 النافذة العائمة والتطبيق والإشعارات","اضغط 🗗 بجانب ملء الشاشة لإخراج المؤقت في نافذة صغيرة تبقى فوق كل شيء (على أندرويد تعمل بوضع الصورة داخل الصورة). اضغط ⬇️ لتثبيت Study Buddy كتطبيق. فعّل الإعدادات ← الإشعارات ← إظهار المؤقت في الإشعارات لرؤيته في إشعارات أندرويد، أو كشارة على أيقونة شريط المهام في ويندوز (ثبّت التطبيق أولًا)."],
 ["📶 Offline","No internet? Keep studying: the timer keeps counting and your time is saved on this device. It syncs by itself when you're back online or open the site again.","📶 بدون إنترنت","لا يوجد إنترنت؟ واصل المذاكرة: يستمر المؤقت ويُحفظ وقتك على هذا الجهاز، ويتزامن تلقائيًا عند عودة الاتصال أو عند فتح الموقع مرة أخرى."],
 ["✏️ Changing your name","You can change your name tag in ⚙️ Settings. Your friends, groups and private chats move with you, and your friends get a notice. You can turn those notices off in Settings → Notifications.","✏️ تغيير اسمك","يمكنك تغيير اسمك من ⚙️ الإعدادات. ينتقل أصدقاؤك ومجموعاتك ومحادثاتك الخاصة معك، ويصلهم إشعار بذلك. يمكنك إيقاف هذه الإشعارات من الإعدادات ← الإشعارات."],
 ["🔑 Account","Log in from any device with your name tag and password. Accounts unused for 3 months are deleted.","🔑 الحساب","سجّل الدخول من أي جهاز باسم المستخدم وكلمة المرور. تُحذف الحسابات غير المستخدمة لمدة 3 أشهر."]];
 function help(){const a=cfg.lang==="ar";$("#dlg").innerHTML=`<h3>Help</h3>`+HELP.map(h=>`<p style="margin:8px 0"><b>${h[a?2:0]}</b><br>${h[a?3:1]}</p>`).join("")+`<div style="margin-top:14px;text-align:end"><button id="s-x">Close</button></div>`;$("#dlg").showModal()}
 function person(k){const n=users[k]?.name||k,m=cfg.muted.includes(k);$("#dlg").innerHTML=`<h3>${esc(n)}</h3><div style="display:grid;gap:8px"><button data-mute="${k}">${m?"🔔 Unmute":"🔕 Mute"}</button><button data-hide="${k}">🙈 Hide from list</button><button data-blk="${k}" class="danger">🚫 Block</button></div><p class="empty">Mute: no sounds or alerts from them. Block: removed from your friends, list and chats.</p><div style="margin-top:14px;text-align:end"><button id="s-x">Close</button></div>`;$("#dlg").showModal()}
 applyLook();applyLang();
+const sq=matchMedia("(max-width:320px),(max-height:420px)");
+function applySmall(){if(sq.matches&&cfg.sm!=="normal")document.body.dataset.small=cfg.sm;else delete document.body.dataset.small;lastMini="";updMini()}
+let lastMini="";function updMini(){if(!ready||!document.body.dataset.small)return;const h=shown().map(entry).filter(e=>e.st==="studying").map(e=>`<span class="av" title="${esc(e.name)}" style="border-color:${ST.studying[1]}">${av(e.u,e.k)}</span>`).join("");if(h!==lastMini){lastMini=h;$("#mini").innerHTML=h}}
+sq.addEventListener("change",applySmall);
 /* ---- pomodoro, offline sync, renames ---- */
 let lv=0;
 const pd=ph=>(ph==="focus"?cfg.pm.f:ph==="long"?cfg.pm.l:cfg.pm.s)*60;
@@ -190,11 +204,12 @@ function showTimer(){let s=me.status==="studying"&&me.since?(now()-me.since)/100
   if(p&&(me.status==="studying"||me.status==="break")){s=Math.max(0,pd(p.ph)-(now()-p.s)/1000);l=p.ph==="focus"?T("🍅 Focus {a}/{b}").replace("{a}",p.n%cfg.pm.c+1).replace("{b}",cfg.pm.c):p.ph==="long"?T("🌴 Long break"):T("☕ Short break")}
   else if(me.status==="idle")s=pd("focus")}
  $("#sess").textContent=fmt(s);if(l)$("#stl").textContent=l}
-const renderModes=()=>{$("#modes").innerHTML=[["flow","⏱ Flow"],["pom","🍅 Pomodoro"]].map(([m,l])=>`<button class="chip${cfg.pm.mode===m?" on":""}" data-mode="${m}">${l}</button>`).join("")};
+function pomEdit(){$("#dlg").innerHTML=`<h3>🍅 Pomodoro</h3><label>Focus (minutes) <input type="number" min="1" max="180" data-pm="f" value="${cfg.pm.f}" style="width:80px"></label><label>Short break (minutes) <input type="number" min="1" max="180" data-pm="s" value="${cfg.pm.s}" style="width:80px"></label><label>Long break (minutes) <input type="number" min="1" max="180" data-pm="l" value="${cfg.pm.l}" style="width:80px"></label><label>Focus rounds before a long break <input type="number" min="1" max="180" data-pm="c" value="${cfg.pm.c}" style="width:80px"></label><label><input type="checkbox" data-pm="auto" ${cfg.pm.auto?"checked":""}> Start the next focus round automatically</label><div style="margin-top:14px;text-align:end"><button id="s-x">Close</button></div>`;$("#dlg").showModal()}
+const renderModes=()=>{$("#pen").hidden=cfg.pm.mode!=="pom";$("#modes").innerHTML=[["flow","⏱ Flow"],["pom","🍅 Pomodoro"]].map(([m,l])=>`<button class="chip${cfg.pm.mode===m?" on":""}" data-mode="${m}">${l}</button>`).join("")};
 function saveLoc(){if(!ready)return;lv++;cfg.loc={k:key,status:me.status,since:me.since,total:me.total,days:me.days,hb:now()};cfg.off=off;cfg.dirty=1;save()}
 setInterval(()=>{if(ready&&me.status==="studying")saveLoc()},5000);
 /* heartbeat from a worker so background tabs are not throttled into "offline" */
-function beat(){if(Date.now()-hbl>8000)push()}
+function beat(){if(ready){try{showTimer()}catch(e){}trayUpdate();pipUpdate()}if(Date.now()-hbl>8000)push()}
 try{const w=new Worker(URL.createObjectURL(new Blob(["setInterval(()=>postMessage(1),15000)"])));w.onmessage=()=>{if(ready)beat()}}catch(e){}
 /* someone renamed: move my local block/mute/hide lists to the new tag */
 function remap(o,n){for(const L of["muted","hidden"]){const a=cfg[L];if(a.includes(o)){if(!a.includes(n))a.push(n);cfg[L]=a.filter(x=>x!==o)}}
@@ -235,12 +250,12 @@ function shown(){const s=new Set(),sel=cfg.sel,all=!sel.length;
  if(all||sel.includes("f"))cfg.friends.forEach(k=>s.add(k));
  myG().forEach(([t,g])=>{if(all||sel.includes("g:"+t))Object.keys(g.members).forEach(k=>s.add(k))});
  s.delete(key);return[...s].filter(k=>!cfg.blocked.includes(k)&&!cfg.hidden.includes(k))}
-function renderChips(){$("#pers").innerHTML=[["total","All time"],["day","Today"],["week","Week"],["month","Month"]].map(([p,l])=>`<button class="chip${P()===p?" on":""}" data-per="${p}">${l}</button>`).join("");const sel=cfg.sel,c=(id,l)=>`<button class="chip${sel.includes(id)?" on":""}" data-chip="${id}">${l}</button>`;
+function renderChips(){$("#pers").innerHTML=[["day","Daily"],["week","Weekly"]].map(([p,l])=>`<button class="chip${P()===p?" on":""}" data-per="${p}">${l}</button>`).join("");const sel=cfg.sel,c=(id,l)=>`<button class="chip${sel.includes(id)?" on":""}" data-chip="${id}">${l}</button>`;
  $("#chips").innerHTML=`<button class="chip${sel.length?"":" on"}" data-chip="all">All</button>`+c("f","💛 Friends")+`<button class="chip" data-chip="gonly">Groups only</button>`+myG().map(([t,g])=>c("g:"+t,"👭 "+esc(g.name))).join("")+(cfg.hidden.length?`<button class="chip" data-chip="unhide">${T("👀 {n} hidden").replace("{n}",cfg.hidden.length)}</button>`:"")}
-const notify=(t,b)=>{try{if(cfg.nt.pop&&document.hidden&&window.Notification&&Notification.permission==="granted")new Notification(t,{body:b})}catch(e){}};
+const notify=(t,b)=>{try{if(cfg.nt.pop&&document.hidden&&window.Notification&&Notification.permission==="granted"){if(navigator.serviceWorker)navigator.serviceWorker.ready.then(r=>r.showNotification(t,{body:b,icon:"icon-192.png"})).catch(()=>{try{new Notification(t,{body:b})}catch(e){}});else new Notification(t,{body:b})}}catch(e){}};
 function renderReqs(){const ks=Object.keys(reqs).filter(k=>!cfg.blocked.includes(k)),h=ks.length?`<div class="card"><b>💌 Friend requests</b>${ks.map(k=>`<div class="row" style="margin:6px 0 0"><span class="nm"><b>${esc(users[k]?.name||k)}</b><small>wants to be friends</small></span><button class="mini" data-acc="${k}">✔ Accept</button><button class="mini" data-dec="${k}" aria-label="Decline">✖</button></div>`).join("")}</div>`:"";const h2=h+rnH();if(h2!==lastReq){lastReq=h2;$("#reqs").innerHTML=h2}}
 function updDots(){const k=Object.keys(unr).filter(x=>unr[x]),on=cfg.nt.dots,n=Object.keys(reqs).length;$("#dr").hidden=!(on&&k.some(x=>x[0]==="g"));$("#db").hidden=!(on&&k.some(x=>x[0]==="d"));$("#dq").hidden=!(on&&n);$("#dq").textContent=n}
-function render(){if(!ready)return;renderChips();renderReqs();
+function render(){if(!ready)return;updMini();renderChips();renderReqs();
  const es=[key,...shown()].map(entry).sort((a,b)=>b[P()]-a[P()]);
  const sig=JSON.stringify(es.map(e=>[e.k,e.st,(e.u?.pic||"").length,e.name,cfg.friends.includes(e.k),cfg.muted.includes(e.k),P()]));
  if(sig!==lastSig){lastSig=sig;$("#list").innerHTML=es.map((e,i)=>`<div class="row${e.k===key?" me":""}" data-k="${e.k}"><span class="rk">${i+1}</span><span class="av" style="border-color:${ST[e.st][1]}">${av(e.u,e.k)}</span><span class="nm"><b>${esc(e.name)}</b><small>${e.miss?"Not found yet":ST[e.st][0]}${cfg.muted.includes(e.k)?" <span>🔕</span>":""}</small></span><span class="t"></span>${e.k===key?"":`${cfg.friends.includes(e.k)?`<button class="mini" data-dm="${e.k}" aria-label="Message">💬</button>`:`<button class="mini" data-rq="${e.k}" aria-label="Send friend request">➕</button>`}<button class="mini" data-more="${e.k}" aria-label="More">⋯</button>`}</div>`).join("")}
@@ -292,7 +307,28 @@ function setStatus(n,at,auto){if(!ready||me.status===n)return;const t=at??now(),
  if(n==="studying")me.since=Math.floor(t);me.status=n;if(!auto){const p=me.pom;me.pom=cfg.pm.mode==="pom"&&(n==="studying"||n==="break")?{ph:n==="break"?"short":"focus",s:t,n:p?p.n:0}:null}
  if(n==="studying")beep("start");else if(was==="studying")beep("end");
  push();saveLoc();hl();render()}
-setInterval(()=>{if(!ready)return;showTimer();const e=entry(key);$("#sd").textContent=fmt(e.day);$("#sw").textContent=fmt(e.week);$("#sm").textContent=fmt(e.month);render()},1000);
+/* ---- floating window (PiP) ---- */
+let pw=null,pcv=null,pvd=null;
+const SLBL=()=>$("#stl").textContent;
+function pipBtns(){return[["studying","📖 Study","--mint"],["break","🍵 Break","--but"],["away","🌙 Away","--peach"],["idle","⏹ Stop","--lav"]].map(([s,l,c])=>`<button data-s="${s}" style="--c:var(${c})">${T(l)}</button>`).join("")}
+function pipDraw(){if(!pcv)return;const c=pcv.getContext("2d"),cs=getComputedStyle($("#timer")),ink=getComputedStyle(document.body).color;c.fillStyle=cs.backgroundColor;c.fillRect(0,0,320,180);c.fillStyle=ink;c.textAlign="center";c.font="600 64px system-ui,sans-serif";c.fillText($("#sess").textContent,160,95);c.font="500 20px system-ui,sans-serif";c.fillText(SLBL(),160,135)}
+function pipUpdate(){if(pw&&pw.document){const d=pw.document;d.querySelector("#sess").textContent=$("#sess").textContent;d.querySelector("#stl").textContent=SLBL();d.querySelectorAll("[data-s]").forEach(b=>b.classList.toggle("on",b.dataset.s===me.status));const m=d.querySelector("#mini");if(cfg.sm==="friends"||cfg.sm==="both"){m.style.display="flex";if(m.innerHTML!==$("#mini").innerHTML||!$("#mini").innerHTML)m.innerHTML=shown().map(entry).filter(e=>e.st==="studying").map(e=>`<span class="av" style="border-color:${ST.studying[1]}">${av(e.u,e.k)}</span>`).join("")}else m.style.display="none"}else if(pcv)pipDraw()}
+async function togglePip(){try{if(pw){pw.close();return}
+ if(pvd&&document.pictureInPictureElement===pvd){await document.exitPictureInPicture();return}
+ if(window.documentPictureInPicture){pw=await documentPictureInPicture.requestWindow({width:320,height:220});const d=pw.document,h=d.documentElement;h.dataset.theme=cfg.theme;if(document.documentElement.dataset.dark)h.dataset.dark=1;h.dir=document.documentElement.dir;
+  const st=d.createElement("style");st.textContent=document.querySelector("style").textContent+"body{max-width:none;padding:8px;height:auto;min-height:100%}";d.head.append(st);
+  d.body.innerHTML=`<div id="timer" style="margin:0 0 8px"><div id="sess"></div><small id="stl"></small></div><div id="btns">${pipBtns()}</div><div id="mini" style="display:none;flex-wrap:wrap;gap:6px;justify-content:center"></div>`;
+  d.body.onclick=e=>{const b=e.target.closest("[data-s]");if(b){beep("click");setStatus(b.dataset.s)}};pw.addEventListener("pagehide",()=>{pw=null});pipUpdate();return}
+ pcv=document.createElement("canvas");pcv.width=320;pcv.height=180;pvd=document.createElement("video");pvd.muted=true;pvd.playsInline=true;pipDraw();pvd.srcObject=pcv.captureStream(2);await pvd.play();pvd.addEventListener("leavepictureinpicture",()=>{pvd.srcObject=null;pcv=null;pvd=null},{once:true});await pvd.requestPictureInPicture()}catch(e){pcv=null;pvd=null;banner("Floating window isn't available here.")}}
+if(!(window.documentPictureInPicture||document.pictureInPictureEnabled))$("#pip").hidden=true;$("#pip").onclick=togglePip;
+/* ---- timer in notifications (Android) / taskbar badge (desktop) ---- */
+const ANDROID=/Android/i.test(navigator.userAgent);let tl=0,tb=-1;
+function trayUpdate(f){if(!ready)return;const act=me.status==="studying"||me.status==="break",on=cfg.nt.tray&&act&&window.Notification&&Notification.permission==="granted";
+ if(!on||f&&!act){if(tb!==0){tb=0;try{navigator.clearAppBadge?.()}catch(e){}if(ANDROID||navigator.serviceWorker)navigator.serviceWorker?.ready.then(r=>r.getNotifications({tag:"sb-timer"}).then(a=>a.forEach(n=>n.close()))).catch(()=>{})}return}
+ const tx=$("#sess").textContent,p=tx.split(":").map(Number),mins=Math.ceil((p[0]*3600+p[1]*60+p[2])/60);
+ if(ANDROID){if(Date.now()-tl<30000&&!f)return;tl=Date.now();navigator.serviceWorker?.ready.then(r=>r.showNotification("Study Buddy",{body:SLBL()+" · "+tx,tag:"sb-timer",silent:true,requireInteraction:true,renotify:false,icon:"icon-192.png",badge:"icon-192.png"})).catch(()=>{})}
+ else if(mins!==tb){tb=mins;try{navigator.setAppBadge?.(Math.max(1,mins))}catch(e){}}}
+setInterval(()=>{if(!ready)return;showTimer();pipUpdate();trayUpdate();const e=entry(key);$("#sd").textContent=fmt(e.day);$("#sw").textContent=fmt(e.week);$("#sm").textContent=fmt(e.month);render()},1000);
 
 /* ---- groups ---- */
 function renderGroups(){$("#glist").innerHTML=myG().map(([t,g])=>{const own=g.owner===key;return`<div class="card"><b>👭 ${esc(g.name)}</b> <span class="tag" data-copy="${t}" title="Tap to copy">#${t}</span> <button class="mini lk" data-link="${t}" aria-label="Copy invite link" title="Copy invite link">🔗</button><div>${Object.keys(g.members).map(k=>`<span class="pill">${esc(users[k]?.name||k)}${own&&k!==key?` <a data-ban="${t}|${k}" role="button" aria-label="Ban">✕</a>`:""}</span>`).join("")}</div><div style="margin-top:6px;display:flex;gap:8px"><button data-addall="${t}">💛 Add all as friends</button><button data-leave="${t}">Leave</button></div></div>`}).join("")||`<p class="empty">No groups yet. Create one, or enter a tag to join.</p>`}
@@ -312,14 +348,14 @@ function view(v){document.querySelectorAll("section").forEach(s=>s.hidden=s.id!=
 function settings(){$("#dlg").innerHTML=`<h3>Name</h3><div class="add"><input id="s-name" value="${esc(cfg.name||"")}" maxlength="20"><button id="s-nsave">Save</button></div><small id="s-msg"></small>
 <h3>Profile picture</h3><input type="file" id="s-pic" accept="image/*" style="width:100%">
 <h3>Appearance</h3><label>Mode <select id="s-mode"><option value="auto">Auto (system)</option><option value="light">Light</option><option value="dark">Dark</option></select></label><div style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0">${Object.entries(TH).map(([k,l])=>`<button class="chip${cfg.theme===k?" on":""}" data-th="${k}">${l}</button>`).join("")}</div><label>Language <select id="s-lang"><option value="en">English</option><option value="ar">العربية</option></select></label>
-<h3>Pomodoro</h3><label>Focus (minutes) <input type="number" min="1" max="180" data-pm="f" value="${cfg.pm.f}" style="width:80px"></label><label>Short break (minutes) <input type="number" min="1" max="180" data-pm="s" value="${cfg.pm.s}" style="width:80px"></label><label>Long break (minutes) <input type="number" min="1" max="180" data-pm="l" value="${cfg.pm.l}" style="width:80px"></label><label>Focus rounds before a long break <input type="number" min="1" max="180" data-pm="c" value="${cfg.pm.c}" style="width:80px"></label><label><input type="checkbox" data-pm="auto" ${cfg.pm.auto?"checked":""}> Start the next focus round automatically</label>
+<h3>When the window is small</h3><select id="s-sm" style="width:100%"><option value="normal">Normal (nothing changes)</option><option value="timer">Timer only</option><option value="friends">Active friends only</option><option value="both">Timer + active friends</option></select>
 <h3>Background</h3><label><input type="checkbox" id="s-bg" ${cfg.bg?"checked":""}> Keep running (keeps the screen awake)</label>
-<h3>Notifications</h3><label><input type="checkbox" id="s-dots" ${cfg.nt.dots?"checked":""}> Dots for new messages (🔴 groups, 🔵 DMs)</label><label><input type="checkbox" id="s-pop" ${cfg.nt.pop?"checked":""}> Pop-up notifications when the tab is hidden</label><label><input type="checkbox" id="s-ren" ${cfg.nt.ren?"checked":""}> Notify me when someone changes their name</label>
+<h3>Notifications</h3><label><input type="checkbox" id="s-dots" ${cfg.nt.dots?"checked":""}> Dots for new messages (🔴 groups, 🔵 DMs)</label><label><input type="checkbox" id="s-pop" ${cfg.nt.pop?"checked":""}> Pop-up notifications when the tab is hidden</label><label><input type="checkbox" id="s-tray" ${cfg.nt.tray?"checked":""}> Show the timer in notifications / taskbar icon</label><label><input type="checkbox" id="s-ren" ${cfg.nt.ren?"checked":""}> Notify me when someone changes their name</label>
 <h3>Sounds</h3><label><input type="checkbox" id="s-on" ${cfg.snd.on?"checked":""}> Sounds on</label><label>Volume <input type="range" id="s-vol" min="0" max="1" step=".05" value="${cfg.snd.vol}"></label>${Object.keys(S).map(k=>`<label><input type="checkbox" data-snd="${k}" ${cfg.snd.off.includes(k)?"":"checked"}> ${SL[k]}</label>`).join("")}
 <h3>Muted people</h3>${cfg.muted.map(k=>`<span class="pill">${esc(users[k]?.name||k)} <a data-unmute="${k}" role="button">undo</a></span>`).join("")||"<small>Nobody.</small>"}
 <h3>Blocked people</h3>${cfg.blocked.map(k=>`<span class="pill">${esc(users[k]?.name||k)} <a data-unblk="${k}" role="button">undo</a></span>`).join("")||"<small>Nobody.</small>"}
 <h3>Your data</h3><div style="display:flex;gap:8px"><button id="s-del" class="danger">Reset to zero</button><button id="s-out">Log out</button></div>
-<div style="margin-top:14px;text-align:end"><button id="s-x">Close</button></div>`;$("#s-mode").value=cfg.mode;$("#s-lang").value=cfg.lang;$("#dlg").showModal()}
+<div style="margin-top:14px;text-align:end"><button id="s-x">Close</button></div>`;$("#s-mode").value=cfg.mode;$("#s-sm").value=cfg.sm;$("#s-lang").value=cfg.lang;$("#dlg").showModal()}
 function pic(f){const im=new Image();im.onload=()=>{const c=document.createElement("canvas");c.width=c.height=64;const s=Math.min(im.width,im.height);c.getContext("2d").drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,64,64);api("PATCH","users/"+key,{pic:c.toDataURL("image/jpeg",.7)}).then(poll).catch(onErr)};im.src=URL.createObjectURL(f)}
 async function bg(){try{if(cfg.bg&&"wakeLock"in navigator)wl=await navigator.wakeLock.request("screen");else{wl?.release();wl=null}}catch(e){}}
 $("#dlg").addEventListener("change",e=>{const t=e.target;
@@ -331,6 +367,8 @@ $("#dlg").addEventListener("change",e=>{const t=e.target;
  if(t.id==="s-dots"){cfg.nt.dots=t.checked;updDots()}
  if(t.id==="s-ren")cfg.nt.ren=t.checked;
  if(t.id==="s-pop"){cfg.nt.pop=t.checked;if(t.checked&&window.Notification)Notification.requestPermission()}
+ if(t.id==="s-tray"){cfg.nt.tray=t.checked;if(t.checked&&window.Notification&&Notification.permission==="default")Notification.requestPermission();trayUpdate(1)}
+ if(t.id==="s-sm"){cfg.sm=t.value;applySmall()}
  if(t.dataset.pm){cfg.pm[t.dataset.pm]=t.type==="checkbox"?t.checked:Math.max(1,Math.min(180,Math.round(+t.value)||1))}
  if(t.dataset.snd){const o=cfg.snd.off,k=t.dataset.snd,i=o.indexOf(k);t.checked?i>-1&&o.splice(i,1):i<0&&o.push(k);beep(k)}
  save()});
@@ -367,7 +405,7 @@ document.addEventListener("click",e=>{const t=e.target,c=t.closest("button,a,.ta
  const lv=t.closest("[data-leave]");if(lv&&confirm(T("Leave this group?")))api("DELETE",`groups/${lv.dataset.leave}/members/${key}`).then(poll).catch(onErr)});
 document.addEventListener("contextmenu",e=>{const r=e.target.closest(".row");if(r&&r.dataset.k!==key){e.preventDefault();cfg.hidden.push(r.dataset.k);save();lastSig="";render()}});
 if(!document.documentElement.requestFullscreen)$("#fs").hidden=true;$("#fs").onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();
-$("#gear").onclick=settings;$("#help").onclick=help;$("#gmk").onclick=mkGroup;$("#gjoin").onclick=()=>joinGroup();$("#csend").onclick=send;
+$("#gear").onclick=settings;$("#pen").onclick=pomEdit;$("#help").onclick=help;$("#gmk").onclick=mkGroup;$("#gjoin").onclick=()=>joinGroup();$("#csend").onclick=send;
 $("#cin").onkeydown=e=>{if(e.key==="Enter")send()};$("#csel").onchange=e=>{chatSel=e.target.value;lastMsg="";loadChat()};
 async function addFriend(){const k=$("#fin").value.trim().toLowerCase();$("#fin").value="";if(!k)return;if(!NAME_RE.test(k)||k===key||cfg.friends.includes(k)||cfg.blocked.includes(k))return banner("That name tag is invalid, already a friend, or blocked.");let m="";try{if(!await api("GET",`users/${k}/name`))return banner("Nobody has that name tag.");const acc=!!reqs[k];await sendReq(k);m=acc?"":"Friend request sent 💌 They'll see it on their Home screen."}catch(e){return onErr(e)}await poll();banner(m)}
 $("#fadd").onclick=addFriend;$("#fin").onkeydown=e=>{if(e.key==="Enter")addFriend()};
@@ -375,5 +413,9 @@ document.addEventListener("visibilitychange",()=>{if(!document.hidden){bg();push
 addEventListener("pagehide",()=>{if(!ready)return;saveLoc();let t=me.total;const d={...me.days};if(me.status==="studying"&&me.since){t+=(now()-me.since)/1000;addDays(d,split(me.since,now()))}fetch(`${DB}/users/${key}.json`,{method:"PATCH",keepalive:true,body:JSON.stringify({status:"offline",since:null,total:Math.floor(t),days:d,last_seen:{".sv":"timestamp"}})})});
 addEventListener("online",()=>{push();poll()});
 if("serviceWorker"in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register("sw.js").catch(()=>{});
-boot();
+let ip=null;const sa=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone;
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();ip=e;if(!sa())document.documentElement.dataset.sa=1});
+addEventListener("appinstalled",()=>{ip=null;delete document.documentElement.dataset.sa});
+$("#inst").onclick=async()=>{if(!ip)return;ip.prompt();await ip.userChoice.catch(()=>0);ip=null;delete document.documentElement.dataset.sa};
+applySmall();boot();
 </script></body></html>
