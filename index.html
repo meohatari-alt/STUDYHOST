@@ -8,7 +8,8 @@
 :root{--ta:#ff9ebb;--tb:#ffe08a;--tc:#c9b6ff;--ink:#3d2645;--paper:#fff4ec;--card:#fff;--me:#ffe3ee;--g1:#ffd9e6;--g2:#e3d9ff;--err:#c0264f;--dng:#ffc9d4;--pink:var(--ta);--but:var(--tb);--lav:var(--tc);--mint:#9fe3c3;--peach:#ffb38a}
 :root[data-theme=mint]{--ta:#9fe3c3;--tb:#ffe9a8;--tc:#b8e6ff;--ink:#1f3d33;--paper:#f0fbf5;--me:#dcf7e9;--g1:#cdf3e0;--g2:#d6eefc}
 :root[data-theme=ocean]{--ta:#8cc8ff;--tb:#ffe08a;--tc:#b6c2ff;--ink:#1f2f4d;--paper:#eef6ff;--me:#dcecff;--g1:#cfe6ff;--g2:#e0dcff}
-:root[data-theme=scimates]{--ta:#f4a3bd;--tb:#ffe1a0;--tc:#c3b3ee;--ink:#232552;--paper:#fdf6ec;--me:#fde0ea;--g1:#fbd5e2;--g2:#e1d9f7}
+:root[data-theme=scimates]{--ta:#fb6195;--tb:#ffd234;--tc:#a878ee;--ink:#232552;--paper:#fdf6ec;--me:#ffd9e6;--g1:#ffd0e0;--g2:#cdf1ff;--mint:#6fdcff}
+:root[data-theme=scimates][data-dark]{--mint:color-mix(in srgb,#6fdcff 50%,#1a1420)}
 :root[data-theme=sunset]{--ta:#ffb38a;--tb:#ffd37a;--tc:#ff9ebb;--ink:#4a2a1f;--paper:#fff1e4;--me:#ffe0cc;--g1:#ffd2b8;--g2:#ffc9d4}
 :root[data-dark]{color-scheme:dark;--ink:#f4eaf8;--paper:#1a1420;--card:#2a2034;--err:#ff8aa6;--dng:#6b2a3c;--pink:color-mix(in srgb,var(--ta) 55%,#1a1420);--but:color-mix(in srgb,var(--tb) 50%,#1a1420);--lav:color-mix(in srgb,var(--tc) 55%,#1a1420);--mint:color-mix(in srgb,#9fe3c3 50%,#1a1420);--peach:color-mix(in srgb,#ffb38a 55%,#1a1420);--me:color-mix(in srgb,var(--ta) 30%,#1a1420);--g1:color-mix(in srgb,var(--ta) 22%,#1a1420);--g2:color-mix(in srgb,var(--tc) 22%,#1a1420)}
 *{box-sizing:border-box}
@@ -123,6 +124,7 @@ body[data-small] #pray{display:none!important}
 .rxp{display:flex;gap:2px;background:var(--paper);border:2px solid var(--ink);border-radius:14px;padding:2px 4px;margin-top:3px;width:fit-content}
 .rxp button{border:0;box-shadow:none;background:transparent;font-size:20px;padding:0 3px}
 .m.hl{outline:3px solid var(--lav)}
+#dlg .dx{position:sticky;top:0;float:inline-end;z-index:3;width:34px;height:34px;padding:0;border-radius:50%;display:grid;place-items:center;font-size:16px;line-height:1;background:var(--card)}
 </style></head><body>
 <header><h1>Study Buddy <span id="mascot">🍓</span></h1><b id="me"></b><button id="pip" aria-label="Floating window" title="Floating window">🗗</button><button id="inst" aria-label="Install app" title="Install app">⬇️</button><button id="fs" aria-label="Full screen">⛶</button><button id="gear" aria-label="Settings">⚙️</button></header>
 <details id="pray"><summary><span id="pn">🕌</span><span class="pc" id="pcd"></span></summary><div class="pt"><small>📍 Alexandria, Egypt</small><ul id="pl"></ul><button id="pstop" class="mini" hidden>⏹ Stop azan</button></div></details>
@@ -450,7 +452,7 @@ $("#dlg").addEventListener("change",e=>{const t=e.target;
  save()});
 $("#dlg").addEventListener("input",e=>{if(e.target.id==="s-vol"){cfg.snd.vol=+e.target.value;save();beep("click")}});
 $("#dlg").addEventListener("click",async e=>{const t=e.target;
- if(t.id==="s-x")$("#dlg").close();
+ if(t.id==="s-x"||t.closest(".dx"))$("#dlg").close();
  if(t.id==="s-ptest")playAzan();
  const th=t.closest("[data-th]");if(th){cfg.theme=th.dataset.th;save();applyLook();document.querySelectorAll("[data-th]").forEach(b=>b.classList.toggle("on",b===th));const sb=document.querySelector(".thm summary b");if(sb)sb.innerHTML=thLabel(cfg.theme);th.closest("details").open=false}
  if(t.dataset.unmute){cfg.muted=cfg.muted.filter(k=>k!==t.dataset.unmute);save();lastSig="";render();settings()}
@@ -493,6 +495,9 @@ document.addEventListener("click",e=>{const t=e.target,c=t.closest("button,a,.ta
  const lv=t.closest("[data-leave]");if(lv&&confirm(T("Leave this group?")))api("DELETE",`groups/${lv.dataset.leave}/members/${key}`).then(poll).catch(onErr)});
 document.addEventListener("contextmenu",e=>{const r=e.target.closest(".row");if(r&&r.dataset.k!==key){e.preventDefault();cfg.hidden.push(r.dataset.k);save();lastSig="";render()}});
 if(!document.documentElement.requestFullscreen)$("#fs").hidden=true;$("#fs").onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();
+(()=>{const d=$("#dlg"),out=e=>{const r=d.getBoundingClientRect();return e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom};let dn=false;
+ d.addEventListener("pointerdown",e=>{dn=e.target===d&&out(e)});d.addEventListener("click",e=>{if(dn&&e.target===d&&out(e))d.close();dn=false});
+ new MutationObserver(()=>{if(!d.querySelector(":scope>.dx")){const b=document.createElement("button");b.className="dx";b.type="button";b.setAttribute("aria-label","Close");b.textContent="✕";d.prepend(b)}}).observe(d,{childList:true})})();
 $("#gear").onclick=settings;$("#pen").onclick=pomEdit;$("#help").onclick=help;$("#gmk").onclick=mkGroup;$("#gjoin").onclick=()=>joinGroup();$("#csend").onclick=send;$("#emob").onclick=()=>{const p=$("#emo");p.hidden=!p.hidden;if(!p.hidden)emoDraw()};
 $("#cin").onkeydown=e=>{if(e.key==="Enter")send()};$("#csel").onchange=e=>{chatSel=e.target.value;lastMsg="";CM={};replyTo=null;rxOpen=null;rbar();loadChat()};
 async function addFriend(){const k=$("#fin").value.trim().toLowerCase();$("#fin").value="";if(!k)return;if(!NAME_RE.test(k)||k===key||cfg.friends.includes(k)||cfg.blocked.includes(k))return banner("That name tag is invalid, already a friend, or blocked.");let m="";try{if(!await api("GET",`users/${k}/name`))return banner("Nobody has that name tag.");const acc=!!reqs[k];await sendReq(k);m=acc?"":"Friend request sent 💌 They'll see it on their Home screen."}catch(e){return onErr(e)}await poll();banner(m)}
