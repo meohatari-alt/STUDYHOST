@@ -122,7 +122,7 @@ body[data-small] #pray{display:none!important}
 .rx{padding:0 7px;font-size:13px;box-shadow:none;border-width:1.5px;border-radius:12px}.rx.on{background:var(--lav)}
 .ma{margin-inline-start:auto;display:flex;gap:2px;opacity:.65}
 .m .ma .mini{border-width:1.5px;box-shadow:none;padding:0 5px;font-size:12px;background:transparent}
-.rxp{display:flex;gap:2px;background:var(--paper);border:2px solid var(--ink);border-radius:14px;padding:2px 4px;margin-top:3px;width:fit-content}
+.rxp{display:flex;flex-wrap:wrap;max-width:100%;gap:2px;background:var(--paper);border:2px solid var(--ink);border-radius:14px;padding:2px 4px;margin-top:3px;width:fit-content}
 .rxp button{border:0;box-shadow:none;background:transparent;font-size:20px;padding:0 3px}
 .m.hl{outline:3px solid var(--lav)}
 #dlg .dx{position:sticky;top:0;float:inline-end;z-index:3;width:34px;height:34px;padding:0;border-radius:50%;display:grid;place-items:center;font-size:16px;line-height:1;background:var(--card)}
@@ -399,8 +399,8 @@ async function joinGroup(tg){const t=(tg??$("#gtag").value).trim().replace("#","
 const cpath=(s=chatSel)=>s==="general"?"chat/general":s.startsWith("g_")?"chat/"+s:"chat/dm_"+[key,s.slice(3)].sort().join("__");
 function fillSel(){const o=[["general","🌍 General"],...myG().map(([t,g])=>["g_"+t,"👭 "+g.name]),...cfg.friends.filter(k=>!cfg.blocked.includes(k)).map(k=>["dm:"+k,"💌 "+(users[k]?.name||k)])];
  if(!o.some(x=>x[0]===chatSel))chatSel="general";$("#csel").innerHTML=o.map(([v,l])=>`<option value="${esc(v)}"${v===chatSel?" selected":""}>${unr[v]&&cfg.nt.dots?(v[0]==="g"?"🔴 ":"🔵 "):""}${esc(l)}</option>`).join("")}
-const RX=["❤️","👍","😂","😮","😢","🔥"];
-const EMO=[["😀","😂","🥹","😍","🥰","😎","🤓","🤔","😅","😭","😴","🤯","🥳","😇","😉","🙃","😤","😡","🤗","🫡","😋","😬","🥱","😌"],["👍","👎","👏","🙌","🙏","💪","✌️","🤞","👋","🫶","❤️","💛","💚","💙","💜","🧡","💖","💔","✨","🔥"],["📚","📖","✏️","📝","💻","🧠","🎓","⏰","☕","🍵","🍓","🍕","🍫","🌙","☀️","🌸","🐱","🐰","🐻","🦊"],["🎉","🏆","💯","✅","❌","⭐","🌟","💡","🎧","🎵","🕌","🤲","🌍","🚀","🍀","🌈","⚡","🫂","🥇","🎯"]];
+const RX=["❤️","👍","😂","😮","😢","🔥","🍪","🐥","🐤","🐣","🥠","🍘","🥨"];
+const EMO=[["😀","😂","🥹","😍","🥰","😎","🤓","🤔","😅","😭","😴","🤯","🥳","😇","😉","🙃","😤","😡","🤗","🫡","😋","😬","🥱","😌"],["👍","👎","👏","🙌","🙏","💪","✌️","🤞","👋","🫶","❤️","💛","💚","💙","💜","🧡","💖","💔","✨","🔥"],["📚","📖","✏️","📝","💻","🧠","🎓","⏰","☕","🍵","🍓","🍕","🍫","🍪","🥠","🍘","🥨","🌙","☀️","🌸","🐱","🐰","🐻","🦊","🐥","🐤","🐣"],["🎉","🏆","💯","✅","❌","⭐","🌟","💡","🎧","🎵","🕌","🤲","🌍","🚀","🍀","🌈","⚡","🫂","🥇","🎯"]];
 let CM={},rSel=null,rLast=null,replyTo=null,rxOpen=null,emoCat=0;
 async function loadChat(){if(!ready||$("#v-chat").hidden)return;try{const sel=chatSel,m=await api("GET",cpath(),undefined,'?orderBy=%22$key%22&limitToLast=60')||{};if(sel!==chatSel)return;CM=m;const last=Object.keys(m).sort().pop();if(last&&!document.hidden&&chatSel!=="general"){cfg.seen??={};cfg.seen[chatSel]=last;unr[chatSel]=0;save();updDots()}drawChat()}catch(e){onErr(e)}}
 function msgH(i,x){const mine=x.from===key||cfg.old.includes(x.from),rx=x.rx||{};
